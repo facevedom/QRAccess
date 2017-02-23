@@ -5,7 +5,8 @@ when you run "manage.py test".
 
 import django
 from django.test import TestCase
-from app.utils import random_string
+from app.utils import random_string, random_int
+from app.forms import User_self_registration
 
 # TODO: Configure your database in settings.py and sync before running tests.
 
@@ -37,9 +38,18 @@ class ViewTest(TestCase):
     """
         Tests for EVE5
     """
-    def test_user_registration_data_not_empty(self):
+    def test_user_registration_success(self):
         random_email = random_string(8) + '@domain.com'
-        response = self.client.post('/register/user/', {'email': random_email})
-        self.assertContains(response, None, 1, 200)
+        random_id = random_int()
+        response = self.client.post('/user/registration', {'email': random_email,
+                                                        'id': random_id,
+                                                        'name': 'Peter',
+                                                        'last_name': 'Retep',
+                                                        'event_id': 'RutaN_0045HACK'
+                                                        })
+        self.assertContains(response, 'Congratulations', 1, 200)
 
-
+    def test_user_registration_empty(self):
+            form_data = {'email': '', 'id': '', 'name': '', 'last_name': '', 'event_id': ''}
+            form = User_self_registration(data=form_data)
+            self.assertFalse(form.is_valid())

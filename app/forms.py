@@ -16,3 +16,10 @@ class BootstrapAuthenticationForm(AuthenticationForm):
                                widget=forms.PasswordInput({
                                    'class': 'form-control',
                                    'placeholder':'Password'}))
+
+class User_self_registration(forms.Form):
+    name = forms.CharField()
+    last_name = forms.CharField()
+    email = forms.EmailField()
+    id = forms.IntegerField()
+    event_id = forms.CharField()

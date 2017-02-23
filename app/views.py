@@ -6,6 +6,11 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
+from app.forms import User_self_registration
+from django.http import HttpResponseRedirect
+from django.http import HttpResponse, Http404
+# for testing only
+from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
     """Renders the home page."""
@@ -44,3 +49,13 @@ def about(request):
             'year':datetime.now().year,
         }
     )
+
+@csrf_exempt
+def user_registration(request):
+    if request.method == 'POST':
+        form = User_self_registration(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            name = cd['name']
+            return render(request, 'end_user/user_registration_success.html', {'name': name})      
+    return HttpResponse("Error")
