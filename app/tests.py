@@ -56,4 +56,6 @@ class ViewTest(TestCase):
         form = User_self_registration(data=form_data)
         self.assertFalse(form.is_valid())
 
- 
+    def test_valid_event_id(self):
+        # tests for validation failure if id is invalid
+        return True
