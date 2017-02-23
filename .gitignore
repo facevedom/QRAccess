@@ -141,3 +141,6 @@ $RECYCLE.BIN/
 
 # Database
 db.sqlite3
+
+# Coverage
+cover/
