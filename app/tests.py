@@ -39,7 +39,7 @@ class ViewTest(TestCase):
     """
     def test_user_registration_data_not_empty(self):
         random_email = random_string(8) + '@domain.com'
-        response = self.client('/register/user/', {'email': random_email})
+        response = self.client.post('/register/user/', {'email': random_email})
         self.assertContains(response, None, 1, 200)
 
 
