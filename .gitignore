@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+env_qr/
 env/
 build/
 develop-eggs/
@@ -137,3 +138,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Database
+db.sqlite3
