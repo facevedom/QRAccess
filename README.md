@@ -1,12 +1,18 @@
+# QRAccess
+
+A physical access manager through QR codes
+
+## Status
 [![Build Status](https://travis-ci.org/facevedom/QRAccess.svg?branch=master)](https://travis-ci.org/facevedom/QRAccess)
 
-## Synopsis
-
-A physical access manager implemented in Django
+## Implements
+* Python
+* Django
+* Bootstrap
 
 ## Contributors
 
-*Felipe* and *Sebastian*
+**Felipe** and **Sebastian**
 
 ---
 
