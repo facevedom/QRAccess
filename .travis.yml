@@ -7,7 +7,7 @@ install:
   - pip install coveralls
 # run tests
 script:
-  - coverage run --source="." manage.py test app
+  - coverage run --source=app manage.py test app
 
 after_success:
   coveralls
