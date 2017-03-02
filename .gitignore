@@ -144,3 +144,15 @@ db.sqlite3
 
 # Coverage
 cover/
+.coverage
+
+# Visual Studio
+bin/
+obj/
+.vs/
+*.pyproj
+*.pyproj.*
+*.sln
+web.config
+web.debug.config
+readme.mht

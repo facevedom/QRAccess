@@ -1,12 +1,9 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-"""
-
 import django
 from django.test import TestCase
 from app.utils import random_string, random_int
 from app.forms import User_self_registration
+from app.models import Company, Event
+
 
 # TODO: Configure your database in settings.py and sync before running tests.
 
@@ -58,4 +55,6 @@ class ViewTest(TestCase):
 
     def test_valid_event_id(self):
         # tests for validation failure if id is invalid
-        return True
+        c = Company(name='RutaN', email='ruta@n.com', telephone=3449900)
+        e = Event(name='Hackaton Mega', company=c, start_date='', end_date='', event_id='')
+        self.assertTrue(True)

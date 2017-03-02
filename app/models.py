@@ -15,6 +15,6 @@ class Event(models.Model):
     company = models.ForeignKey(Company)
     start_date = models.DateField()
     end_date = models.DateField()
-
+    event_id = models.CharField(max_length=50)
 
 
