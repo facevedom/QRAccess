@@ -2,7 +2,6 @@ import django
 from django.test import TestCase
 from app.utils import random_string, random_int
 from app.forms import User_self_registration
-from app.models import Company, Event
 
 
 # TODO: Configure your database in settings.py and sync before running tests.
