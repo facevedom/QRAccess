@@ -1,5 +1,5 @@
 [run]
-omit = *migrations*, app/admin.py
+omit = *migrations*, app/admin.py, app/tests.py
 
 [report]
-omit = *migrations*, app/admin.py
+omit = *migrations*, app/admin.py, app/tests.py
