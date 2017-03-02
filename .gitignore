@@ -157,3 +157,4 @@ obj/
 web.config
 web.debug.config
 readme.mht
+ptvs_virtualenv_proxy.py
