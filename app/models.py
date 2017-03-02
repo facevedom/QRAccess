@@ -18,5 +18,3 @@ class Event(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     event_id = models.CharField(max_length=50)
-
-

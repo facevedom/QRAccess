@@ -59,5 +59,5 @@ def user_registration(request):
         if form.is_valid():
             cd = form.cleaned_data
             name = cd['name']
-            return render(request, 'end_user/user_registration_success.html', {'name': name})      
+            return render(request, 'end_user/user_registration_success.html', {'name': name})
     return HttpResponse("Error")

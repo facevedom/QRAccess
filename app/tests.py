@@ -39,7 +39,7 @@ class ViewTest(TestCase):
         # tests if the POST request was succesfully received
         random_email = random_string(8) + '@domain.com'
         random_id = random_int()
-        response = self.client.post('/user/registration', 
+        response = self.client.post('/user/registration',
                                     {
                                         'email': random_email,
                                         'id': random_id,
