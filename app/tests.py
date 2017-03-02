@@ -54,9 +54,3 @@ class ViewTest(TestCase):
         form_data = {'email': '', 'id': '', 'name': '', 'last_name': '', 'event_id': ''}
         form = User_self_registration(data=form_data)
         self.assertFalse(form.is_valid())
-
-    def test_valid_event_id(self):
-        # tests for validation failure if id is invalid
-        c = Company(name='RutaN', email='ruta@n.com', telephone=3449900)
-        e = Event(name='Hackaton Mega', company=c, start_date='', end_date='', event_id='')
-        self.assertTrue(True)
