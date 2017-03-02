@@ -40,11 +40,11 @@ class ViewTest(TestCase):
         random_email = random_string(8) + '@domain.com'
         random_id = random_int()
         response = self.client.post('/user/registration', {'email': random_email,
-                                                        'id': random_id,
-                                                        'name': 'Peter',
-                                                        'last_name': 'Retep',
-                                                        'event_id': 'RutaN_0045HACK'
-                                                        })
+                                    'id': random_id,
+                                    'name': 'Peter',
+                                    'last_name': 'Retep',
+                                    'event_id': 'RutaN_0045HACK'
+                                    })
         self.assertContains(response, 'Congratulations', 1, 200)
 
     def test_user_registration_empty(self):

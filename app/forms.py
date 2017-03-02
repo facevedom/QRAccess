@@ -3,7 +3,6 @@ Definition of forms.
 """
 
 from django import forms
-from django.utils.translation import ugettext_lazy as _
 
 class User_self_registration(forms.Form):
     name = forms.CharField()

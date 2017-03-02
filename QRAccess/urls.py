@@ -3,9 +3,9 @@ Definition of urls for QRAccess.
 """
 
 from datetime import datetime
-from django.conf.urls import url, include
+from django.conf.urls import url
+from django.conf.urls import include
 from django.contrib import admin
-
 
 import app.forms
 import app.views
