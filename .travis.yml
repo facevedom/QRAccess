@@ -7,9 +7,10 @@ install:
   - pip install coveralls
   - pip install flake8
 # run tests
+before_script:
+  - flake8 .
 script:
   - coverage run --source=app manage.py test
-  - flake8 .
 
 after_success:
   coveralls
