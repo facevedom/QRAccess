@@ -148,6 +148,7 @@ cover/
 
 # Visual Studio
 bin/
+obj/Debug
 obj/
 .vs/
 *.pyproj
