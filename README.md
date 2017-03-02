@@ -4,6 +4,7 @@ A physical access manager through QR codes
 
 ## Status
 [![Build Status](https://travis-ci.org/facevedom/QRAccess.svg?branch=master)](https://travis-ci.org/facevedom/QRAccess)
+[![Coverage Status](https://coveralls.io/repos/github/facevedom/QRAccess/badge.svg?branch=master)](https://coveralls.io/github/facevedom/QRAccess?branch=master)
 
 ## Implements
 * Python
