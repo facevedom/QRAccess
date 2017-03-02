@@ -5,9 +5,11 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install coveralls
+  - pip install pep8
 # run tests
 script:
   - coverage run --source=app manage.py test
+  - find . -name \*.py -exec pep8 --ignore=E402 {} +
 
 after_success:
   coveralls
