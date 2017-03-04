@@ -11,3 +11,8 @@ class User_self_registration(forms.Form):
     email = forms.EmailField()
     id = forms.IntegerField()
     event_id = forms.CharField()
+
+
+class Login(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput(render_value = True))

@@ -11,9 +11,9 @@
                 <h4>Use a local account to log in.</h4>
                 <hr />
                 <div class="form-group">
-                    <label for="id_username" class="col-md-2 control-label">User name</label>
+                    <label for="id_username" class="col-md-2 control-label">Email</label>
                     <div class="col-md-10">
-                        {{ form.username }}
+                        {{ form.email }}
                     </div>
                 </div>
                 <div class="form-group">
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 {% if form.errors %}
-                <p class="validation-summary-errors">Please enter a correct user name and password.</p>
+                <p class="validation-summary-errors">Please enter a correct email and password.</p>
                 {% endif %}
             </form>
         </section>

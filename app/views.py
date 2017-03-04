@@ -6,7 +6,9 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from datetime import datetime
 from app.forms import User_self_registration
+from app.forms import Login
 from django.http import HttpResponse
+from django.contrib.auth import logout
 # for testing only
 from django.views.decorators.csrf import csrf_exempt
 
@@ -61,3 +63,27 @@ def user_registration(request):
             name = cd['name']
             return render(request, 'end_user/user_registration_success.html', {'name': name})
     return HttpResponse("Error")
+
+
+def login(request):
+    if request.method == 'POST':
+        form = Login(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            return HttpResponseRedirect('/contact/thanks/')
+    else:
+        form = Login()
+    return render(
+        request,
+        'app/login.html',
+       {
+           'form': form,
+           'year': datetime.now().year,
+           'title': 'Login'
+       }
+    )
+
+
+def logout_user(request):
+    logout(request)
+    return HttpResponseRedirect('/contact/thanks/')
