@@ -13,4 +13,4 @@ script:
   - coverage run --source=app manage.py test
 
 after_success:
-  coveralls
+  coveralls --verbose
