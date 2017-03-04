@@ -2,10 +2,19 @@
 
 {% block content %}
 
+{% load staticfiles %}
+
 <div class="jumbotron">
-    <h1>QRAccess</h1>
-    <p class="lead">QRAccess is a tool for managin physical access permission at buildings and events</p>
-    <p><a href="https://www.djangoproject.com/" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+    <div class="row">
+        <div class="col-md-2">
+            <img src="{% static 'app/content/images/logo.png' %}" alt="logo" class="img-rounded" height="150">
+        </div>
+        <div class="col-md-10">
+            <h1>QRAccess</h1>
+            <p class="lead">QRAccess is a tool for managin physical access permission at buildings and events</p>
+            <p><a href="https://www.djangoproject.com/" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+        </div>
+    </div>
 </div>
 
 <div class="row">
