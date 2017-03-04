@@ -9,6 +9,7 @@ from app.forms import User_self_registration
 class ViewTest(TestCase):
     """Tests for the application views."""
 
+
     if django.VERSION[:2] >= (1, 7):
         # Django 1.7 requires an explicit setup() when running tests in PTVS
         @classmethod
@@ -70,11 +71,10 @@ class ViewTest(TestCase):
         max = 98457
         random_number = random_int(min, max)
         self.assertGreaterEqual(random_number, min)
-        self.assertLessEqual(random_number, max)        
-        
+        self.assertLessEqual(random_number, max)
+
         random_number = random_int()
         self.assertGreaterEqual(random_number, 0)
         self.assertLessEqual(random_number, 9999999999)
 
         self.assertTrue(isinstance(random_number, int))
-        
