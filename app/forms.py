@@ -15,4 +15,4 @@ class User_self_registration(forms.Form):
 
 class Login(forms.Form):
     email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput(render_value = True))
+    password = forms.CharField(widget=forms.PasswordInput(render_value=True))

@@ -7,7 +7,7 @@ from django.http import HttpRequest
 from datetime import datetime
 from app.forms import User_self_registration
 from app.forms import Login
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import logout
 # for testing only
 from django.views.decorators.csrf import csrf_exempt
@@ -76,11 +76,11 @@ def login(request):
     return render(
         request,
         'app/login.html',
-       {
+        {
            'form': form,
            'year': datetime.now().year,
            'title': 'Login'
-       }
+        }
     )
 
 
