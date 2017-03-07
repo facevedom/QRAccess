@@ -9,6 +9,11 @@ from app.forms import User_self_registration
 from app.forms import Login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import logout
+from app.models import Company
+from app.models import Event
+from app.models import Permission
+from app.models import Room
+
 # for testing only
 from django.views.decorators.csrf import csrf_exempt
 
@@ -69,7 +74,7 @@ def login(request):
     if request.method == 'POST':
         form = Login(request.POST)
         if form.is_valid():
-            cd = form.cleaned_data
+            
             return HttpResponseRedirect('/contact/thanks/')
     else:
         form = Login()
@@ -87,3 +92,7 @@ def login(request):
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect('/contact/thanks/')
+
+
+def generate_qr(request, id):
+    return HttpResponse(id)

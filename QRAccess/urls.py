@@ -17,8 +17,9 @@ urlpatterns = [
     url(r'^contact$', app.views.contact, name='contact'),
     url(r'^about', app.views.about, name='about'),
     url(r'^user/registration$', app.views.user_registration, name='registration'),
-    url(r'^login$', app.views.login, name="login"),
+    url(r'^login$', app.views.login, name='login'),
     url(r'^logout_user', app.views.logout),
+    url(r'^generate/([A-Za-z0-9]+)$', app.views.generate_qr, name='generate'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 ]
