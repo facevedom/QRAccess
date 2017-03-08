@@ -9,8 +9,9 @@ class User_self_registration(forms.Form):
     name = forms.CharField()
     last_name = forms.CharField()
     email = forms.EmailField()
-    id = forms.IntegerField()
+    user_id = forms.CharField()
     event_id = forms.CharField()
+    rooms = forms.CharField()
 
 
 class Login(forms.Form):

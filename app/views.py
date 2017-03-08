@@ -10,6 +10,8 @@ from app.forms import Login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import logout
 from app.models import Permission
+from app.models import EndUser
+from app.models import Event
 
 # for testing only
 from django.views.decorators.csrf import csrf_exempt
@@ -61,10 +63,36 @@ def user_registration(request):
     if request.method == 'POST':
         form = User_self_registration(request.POST)
         if form.is_valid():
-            cd = form.cleaned_data
-            name = cd['name']
-            return render(request, 'end_user/user_registration_success.html', {'name': name})
-    return HttpResponse("Error")
+            data = form.cleaned_data
+            user_id = data['user_id']
+            name = data['name']
+            last_name = data['last_name']
+            email = data['email']
+            event_id = data['event_id']
+            rooms = data['rooms'].split(",")
+
+            if not Event.objects.filter(event_id=event_id).exists():
+                return HttpResponse('Evento inválido')
+            else:
+                event = Event.objects.get(event_id=event_id)
+
+            # TODO get rooms, create rooms objects, validate company rooms, insert into db
+
+            # TODO what if id is already registered but with a different email or name?
+            
+            if not EndUser.objects.filter(id=user_id).exists():
+                user = EndUser.objects.create(id=user_id, name=name, last_name=last_name, email=email)
+                user.save()
+            else: 
+                user = EndUser.objects.get(id=user_id)
+
+            permission = Permission.objects.create(user_id=user, event=event, id="RANDOM")
+            
+            return HttpResponse('%s/generate/%s' % ("dominio", "permiso"))
+
+        else:
+            return HttpResponse('Datos inválidos')
+    return HttpResponse('Algo sucedió')
 
 
 def login(request):
@@ -87,7 +115,7 @@ def login(request):
 
 def logout_user(request):
     logout(request)
-    return HttpResponseRedirect('/contact/thanks/')
+    return render(request, 'logged out')
 
 
 def generate_qr(request, id):

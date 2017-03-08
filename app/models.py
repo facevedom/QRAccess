@@ -20,7 +20,7 @@ class Event(models.Model):
     company = models.ForeignKey(Company)
     start_date = models.DateField()
     end_date = models.DateField()
-    event_id = models.CharField(max_length=50)
+    event_id = models.CharField(max_length=50, primary_key=True)
 
     def __str__(self):
         return self.name
@@ -36,10 +36,19 @@ class Room(models.Model):
         return '%s @ %s' % (self.name, self.company)
 
 
+class EndUser(models.Model):
+    id = models.CharField(max_length=150, primary_key=True)
+    email = models.EmailField()
+    name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+
+    def __str__(self):
+        return '%s - %s %s' % (self.id, self.name, self.last_name)
+
 class Permission(models.Model):
-    user_id = models.CharField(max_length=150)
+    user_id = models.ForeignKey(EndUser)
     event = models.ForeignKey(Event)
-    room = models.ManyToManyField(Room)
+    room = models.ManyToManyField(Room, blank=True)
     id = models.CharField(max_length=150, primary_key=True)
 
     def __str__(self):
