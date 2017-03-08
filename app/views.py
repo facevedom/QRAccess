@@ -74,7 +74,6 @@ def login(request):
     if request.method == 'POST':
         form = Login(request.POST)
         if form.is_valid():
-            
             return HttpResponseRedirect('/contact/thanks/')
     else:
         form = Login()
@@ -95,4 +94,29 @@ def logout_user(request):
 
 
 def generate_qr(request, id):
-    return HttpResponse(id)
+    try:
+        permission = Permission.objects.get(id=id)
+        allowed_rooms = permission.room
+        event = permission.event
+        company = permission.event.company
+        start_date = permission.event.start_date
+        end_date = permission.event.end_date
+        
+    except Permission.DoesNotExist:
+        return HttpResponse('código inválido')
+    else:
+        return render(
+            request,
+            'end_user/generate_qr.html',
+            {
+                'generating_qr': True,
+                'qr_id': id,
+                'allowed_rooms': allowed_rooms,
+                'event': event,
+                'company': company,
+                'start_date': start_date,
+                'end_date': end_date,
+                'year': datetime.now().year,
+                'title': 'QR Generated',
+            }            
+        )
