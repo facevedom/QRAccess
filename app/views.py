@@ -9,10 +9,7 @@ from app.forms import User_self_registration
 from app.forms import Login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import logout
-from app.models import Company
-from app.models import Event
 from app.models import Permission
-from app.models import Room
 
 # for testing only
 from django.views.decorators.csrf import csrf_exempt
@@ -101,7 +98,7 @@ def generate_qr(request, id):
         company = permission.event.company
         start_date = permission.event.start_date
         end_date = permission.event.end_date
-        
+
     except Permission.DoesNotExist:
         return HttpResponse('código inválido')
     else:
@@ -118,5 +115,5 @@ def generate_qr(request, id):
                 'end_date': end_date,
                 'year': datetime.now().year,
                 'title': 'QR Generated',
-            }            
+            }
         )
