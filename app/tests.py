@@ -2,6 +2,7 @@ import django
 from django.test import TestCase
 from app.utils import random_string, random_int
 from app.forms import User_self_registration
+from app.models import EndUser, Event, Room
 
 
 # TODO: Configure your database in settings.py and sync before running tests.
@@ -37,14 +38,17 @@ class ViewTest(TestCase):
     def test_user_registration_success(self):
         # tests if the POST request was succesfully received
         random_email = random_string(8) + '@domain.com'
-        random_id = random_int()
+        random_id = random_string(10)
+        random_id = random_string(10)
+        random_id = random_string(10)
+
         response = self.client.post('/user/registration',
                                     {
-                                        'email': random_email,
-                                        'id': random_id,
                                         'name': 'Peter',
                                         'last_name': 'Retep',
-                                        'event_id': 'RutaN_0045HACK'
+                                        'email': random_email,
+                                        'user_id': random_id,
+                                        'event_id': random_event_id
                                     })
         self.assertContains(response, 'Congratulations', 1, 200)
 
