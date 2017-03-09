@@ -31,6 +31,7 @@ class Room(models.Model):
     company = models.ForeignKey(Company)
     security_level = models.IntegerField()
     description = models.CharField(max_length=1000, default='No description')
+    id = models.CharField(max_length=150, primary_key=True)
 
     def __str__(self):
         return '%s @ %s' % (self.name, self.company)
@@ -48,7 +49,7 @@ class EndUser(models.Model):
 class Permission(models.Model):
     user_id = models.ForeignKey(EndUser)
     event = models.ForeignKey(Event)
-    room = models.ManyToManyField(Room, blank=True)
+    rooms = models.ManyToManyField(Room, blank=True)
     id = models.CharField(max_length=150, primary_key=True)
 
     def __str__(self):

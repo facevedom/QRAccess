@@ -12,6 +12,7 @@ from django.contrib.auth import logout
 from app.models import Permission
 from app.models import EndUser
 from app.models import Event
+from app.models import Room
 
 # for testing only
 from django.views.decorators.csrf import csrf_exempt
@@ -61,7 +62,9 @@ def about(request):
 @csrf_exempt
 def user_registration(request):
     if request.method == 'POST':
+
         form = User_self_registration(request.POST)
+
         if form.is_valid():
             data = form.cleaned_data
             user_id = data['user_id']
@@ -75,8 +78,18 @@ def user_registration(request):
                 return HttpResponse('Evento inválido')
             else:
                 event = Event.objects.get(event_id=event_id)
+            
+            valid_rooms = []
 
-            # TODO get rooms, create rooms objects, validate company rooms, insert into db
+            for room_id in rooms:
+                if not Room.objects.filter(id=room_id).exists():
+                    return HttpResponse('%s no es un ID de room válido' % room_id)
+                else:
+                    room = Room.objects.get(id=room_id)
+                    valid_rooms.append(room)
+
+                if event.company != room.company:
+                    return HttpResponse('%s no pertenece a %s' % (room_id, event.company))
 
             # TODO what if id is already registered but with a different email or name?
             
@@ -86,12 +99,18 @@ def user_registration(request):
             else: 
                 user = EndUser.objects.get(id=user_id)
 
+            # TODO we need a token generator function
+
             permission = Permission.objects.create(user_id=user, event=event, id="RANDOM")
+
+            for room in valid_rooms:
+                permission.rooms.add(room)
             
-            return HttpResponse('%s/generate/%s' % ("dominio", "permiso"))
+            return HttpResponseRedirect('../generate/%s' % permission.id)
 
         else:
             return HttpResponse('Datos inválidos')
+
     return HttpResponse('Algo sucedió')
 
 
@@ -121,7 +140,7 @@ def logout_user(request):
 def generate_qr(request, id):
     try:
         permission = Permission.objects.get(id=id)
-        allowed_rooms = permission.room
+        allowed_rooms = permission.rooms
         event = permission.event
         company = permission.event.company
         start_date = permission.event.start_date
