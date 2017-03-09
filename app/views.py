@@ -6,7 +6,6 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from datetime import datetime
 from app.forms import User_self_registration
-from app.forms import Login
 from django.http import HttpResponse, HttpResponseRedirect
 from app.models import Permission
 from app.models import EndUser
@@ -91,7 +90,7 @@ def user_registration(request):
                     return HttpResponse('%s no pertenece a %s' % (room_id, event.company))
 
             # TODO what if id is already registered but with a different email or name?
-            
+
             if not EndUser.objects.filter(id=user_id).exists():
                 user = EndUser.objects.create(id=user_id, name=name, last_name=last_name, email=email)
                 user.save()

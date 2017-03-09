@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^$', app.views.home, name='home'),
     url(r'^contact$', app.views.contact, name='contact'),
     url(r'^about', app.views.about, name='about'),
+    url(r'^login', app.views.about, name='login'),
     url(r'^user/registration$', app.views.user_registration, name='registration'),
     url(r'^generate/([A-Za-z0-9]+)$', app.views.generate_qr, name='generate'),
     url(r'^check-access$', app.views.check_room_access),

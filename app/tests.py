@@ -2,7 +2,6 @@ import django
 from django.test import TestCase
 from app.utils import random_string, random_int
 from app.forms import User_self_registration
-from app.models import EndUser, Event, Room
 
 
 # TODO: Configure your database in settings.py and sync before running tests.
@@ -48,7 +47,7 @@ class ViewTest(TestCase):
                                         'last_name': 'Retep',
                                         'email': random_email,
                                         'user_id': random_id,
-                                        'event_id': random_event_id
+                                        'event_id': 'RNANPASKD'
                                     })
         self.assertContains(response, 'Congratulations', 1, 200)
 
