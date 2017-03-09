@@ -115,14 +115,15 @@
 <p id="n46" class="stm mis"><a href="#n46">46</a></p>
 <p id="n47" class="stm mis"><a href="#n47">47</a></p>
 <p id="n48" class="pln"><a href="#n48">48</a></p>
-<p id="n49" class="stm mis"><a href="#n49">49</a></p>
+<p id="n49" class="pln"><a href="#n49">49</a></p>
 <p id="n50" class="stm mis"><a href="#n50">50</a></p>
 <p id="n51" class="stm mis"><a href="#n51">51</a></p>
 <p id="n52" class="stm mis"><a href="#n52">52</a></p>
 <p id="n53" class="stm mis"><a href="#n53">53</a></p>
-<p id="n54" class="pln"><a href="#n54">54</a></p>
-<p id="n55" class="stm mis"><a href="#n55">55</a></p>
+<p id="n54" class="stm mis"><a href="#n54">54</a></p>
+<p id="n55" class="pln"><a href="#n55">55</a></p>
 <p id="n56" class="stm mis"><a href="#n56">56</a></p>
+<p id="n57" class="stm mis"><a href="#n57">57</a></p>
 
             </td>
             <td class="text">
@@ -174,14 +175,15 @@
 <p id="t46" class="stm mis">    <span class="key">def</span> <span class="nam">__str__</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t47" class="stm mis">        <span class="key">return</span> <span class="str">'%s - %s %s'</span> <span class="op">%</span> <span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">id</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">name</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">last_name</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t48" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t49" class="stm mis"><span class="key">class</span> <span class="nam">Permission</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t50" class="stm mis">    <span class="nam">user_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">ForeignKey</span><span class="op">(</span><span class="nam">EndUser</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t51" class="stm mis">    <span class="nam">event</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">ForeignKey</span><span class="op">(</span><span class="nam">Event</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t52" class="stm mis">    <span class="nam">rooms</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">ManyToManyField</span><span class="op">(</span><span class="nam">Room</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t53" class="stm mis">    <span class="nam">id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">150</span><span class="op">,</span> <span class="nam">primary_key</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t54" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t55" class="stm mis">    <span class="key">def</span> <span class="nam">__str__</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t56" class="stm mis">        <span class="key">return</span> <span class="str">'%s @ %s'</span> <span class="op">%</span> <span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">user_id</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">event</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t49" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t50" class="stm mis"><span class="key">class</span> <span class="nam">Permission</span><span class="op">(</span><span class="nam">models</span><span class="op">.</span><span class="nam">Model</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t51" class="stm mis">    <span class="nam">user_id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">ForeignKey</span><span class="op">(</span><span class="nam">EndUser</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t52" class="stm mis">    <span class="nam">event</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">ForeignKey</span><span class="op">(</span><span class="nam">Event</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t53" class="stm mis">    <span class="nam">rooms</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">ManyToManyField</span><span class="op">(</span><span class="nam">Room</span><span class="op">,</span> <span class="nam">blank</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t54" class="stm mis">    <span class="nam">id</span> <span class="op">=</span> <span class="nam">models</span><span class="op">.</span><span class="nam">CharField</span><span class="op">(</span><span class="nam">max_length</span><span class="op">=</span><span class="num">150</span><span class="op">,</span> <span class="nam">primary_key</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t55" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t56" class="stm mis">    <span class="key">def</span> <span class="nam">__str__</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t57" class="stm mis">        <span class="key">return</span> <span class="str">'%s @ %s'</span> <span class="op">%</span> <span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">user_id</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">event</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 
             </td>
         </tr>
@@ -192,7 +194,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.3.4</a>,
-            created at 2017-03-09 12:51
+            created at 2017-03-09 15:00
         </p>
     </div>
 </div>

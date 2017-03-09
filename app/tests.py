@@ -34,23 +34,6 @@ class ViewTest(TestCase):
     """
         Tests for EVE5
     """
-    def test_user_registration_success(self):
-        # tests if the POST request was succesfully received
-        random_email = random_string(8) + '@domain.com'
-        random_id = random_string(10)
-        random_id = random_string(10)
-        random_id = random_string(10)
-
-        response = self.client.post('/user/registration',
-                                    {
-                                        'name': 'Peter',
-                                        'last_name': 'Retep',
-                                        'email': random_email,
-                                        'user_id': random_id,
-                                        'event_id': 'RNANPASKD'
-                                    })
-        self.assertContains(response, 'Congratulations', 1, 200)
-
     def test_user_registration_empty(self):
         # tests for validation failure if user's data is empty
         form_data = {'email': '', 'id': '', 'name': '', 'last_name': '', 'event_id': ''}
