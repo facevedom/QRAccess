@@ -34,20 +34,6 @@ class ViewTest(TestCase):
     """
         Tests for EVE5
     """
-    def test_user_registration_success(self):
-        # tests if the POST request was succesfully received
-        random_email = random_string(8) + '@domain.com'
-        random_id = random_int()
-        response = self.client.post('/user/registration',
-                                    {
-                                        'email': random_email,
-                                        'id': random_id,
-                                        'name': 'Peter',
-                                        'last_name': 'Retep',
-                                        'event_id': 'RutaN_0045HACK'
-                                    })
-        self.assertContains(response, 'Congratulations', 1, 200)
-
     def test_user_registration_empty(self):
         # tests for validation failure if user's data is empty
         form_data = {'email': '', 'id': '', 'name': '', 'last_name': '', 'event_id': ''}
@@ -57,7 +43,7 @@ class ViewTest(TestCase):
     """
         Tests for utils
     """
-    def test_utils_random_string(self):
+    def test_random_string(self):
         # tests the random string generator function
         length = 23
         random_text = random_string(23)
