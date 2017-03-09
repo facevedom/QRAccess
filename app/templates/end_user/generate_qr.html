@@ -6,7 +6,7 @@
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title text-center">This is your QR Access code to <strong>{{ event }}</strong></h3>
+                <h3 class="panel-title text-center">{{ name }}, this is your QR Access code for <strong>{{ event }}</strong></h3>
             </div>
             <div class="panel-body">
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -14,7 +14,7 @@
                         <div class="panel-heading" role="tab" id="headingOne">
                             <h4 class="panel-title">
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    QR Code
+                                    Show QR Code
                                 </a>
                             </h4>
                         </div>
@@ -28,7 +28,7 @@
                         <div class="panel-heading" role="tab" id="headingTwo">
                             <h4 class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Places you can access at <strong>{{ company }}:</strong>
+                                    Show places you can access at <strong>{{ company }}:</strong>
                                 </a>
                             </h4>
                         </div>
@@ -83,7 +83,7 @@
             back: '#fff',
 
             // content
-            text: "qraccess.com/qr/{{ qr_id }}",
+            text: "{{ qr_id }}",
 
             // roundend corners in pc: 0..100
             rounded: 50,

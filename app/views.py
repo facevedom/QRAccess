@@ -8,8 +8,10 @@ from datetime import datetime
 from app.forms import User_self_registration
 from app.forms import Login
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import logout
 from app.models import Permission
+from app.models import EndUser
+from app.models import Event
+from app.models import Room
 
 # for testing only
 from django.views.decorators.csrf import csrf_exempt
@@ -59,45 +61,69 @@ def about(request):
 @csrf_exempt
 def user_registration(request):
     if request.method == 'POST':
+
         form = User_self_registration(request.POST)
+
         if form.is_valid():
-            cd = form.cleaned_data
-            name = cd['name']
-            return render(request, 'end_user/user_registration_success.html', {'name': name})
-    return HttpResponse("Error")
+            data = form.cleaned_data
+            user_id = data['user_id']
+            name = data['name']
+            last_name = data['last_name']
+            email = data['email']
+            event_id = data['event_id']
+            rooms = data['rooms'].split(",")
 
+            if not Event.objects.filter(event_id=event_id).exists():
+                return HttpResponse('Evento inválido')
+            else:
+                event = Event.objects.get(event_id=event_id)
 
-def login(request):
-    if request.method == 'POST':
-        form = Login(request.POST)
-        if form.is_valid():
-            return HttpResponseRedirect('/contact/thanks/')
-    else:
-        form = Login()
-    return render(
-        request,
-        'app/login.html',
-        {
-           'form': form,
-           'year': datetime.now().year,
-           'title': 'Login'
-        }
-    )
+            valid_rooms = []
 
+            for room_id in rooms:
+                if not Room.objects.filter(id=room_id).exists():
+                    return HttpResponse('%s no es un ID de room válido' % room_id)
+                else:
+                    room = Room.objects.get(id=room_id)
+                    valid_rooms.append(room)
 
-def logout_user(request):
-    logout(request)
-    return HttpResponseRedirect('/contact/thanks/')
+                if event.company != room.company:
+                    return HttpResponse('%s no pertenece a %s' % (room_id, event.company))
+
+            # TODO what if id is already registered but with a different email or name?
+            
+            if not EndUser.objects.filter(id=user_id).exists():
+                user = EndUser.objects.create(id=user_id, name=name, last_name=last_name, email=email)
+                user.save()
+            else:
+                user = EndUser.objects.get(id=user_id)
+
+            # TODO we need a token generator function
+
+            permission = Permission.objects.create(user_id=user, event=event, id="RANDOM")
+
+            for room in valid_rooms:
+                permission.rooms.add(room)
+
+            # TODO send email with link
+
+            return HttpResponseRedirect('../generate/%s' % permission.id)
+
+        else:
+            return HttpResponse('Datos inválidos')
+
+    return HttpResponse('Algo sucedió')
 
 
 def generate_qr(request, id):
     try:
         permission = Permission.objects.get(id=id)
-        allowed_rooms = permission.room
+        allowed_rooms = permission.rooms
         event = permission.event
         company = permission.event.company
         start_date = permission.event.start_date
         end_date = permission.event.end_date
+        name = permission.user_id.name
 
     except Permission.DoesNotExist:
         return HttpResponse('código inválido')
@@ -115,5 +141,34 @@ def generate_qr(request, id):
                 'end_date': end_date,
                 'year': datetime.now().year,
                 'title': 'QR Generated',
+                'name': name,
             }
         )
+
+
+@csrf_exempt
+def check_room_access(request):
+
+    if request.method == 'POST':
+
+        permission_id = request.POST.get('permission_id')
+        room_id = request.POST.get('room_id')
+
+        try:
+            permission = Permission.objects.get(id=permission_id)
+        except Permission.DoesNotExist:
+            return HttpResponse(False)
+
+        try:
+            room = Room.objects.get(id=room_id)
+        except Room.DoesNotExist:
+            return HttpResponse(False)
+
+        for room in permission.rooms.all():
+            if room.id == room_id:
+                return HttpResponse(True)
+
+        return HttpResponse(False)
+
+    else:
+        return HttpResponse(False)
