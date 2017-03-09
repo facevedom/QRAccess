@@ -8,9 +8,6 @@ from datetime import datetime
 from app.forms import User_self_registration
 from app.forms import Login
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate
-from django.contrib.auth import login
-from django.contrib.auth import logout
 from app.models import Permission
 from app.models import EndUser
 from app.models import Event
@@ -80,7 +77,7 @@ def user_registration(request):
                 return HttpResponse('Evento inválido')
             else:
                 event = Event.objects.get(event_id=event_id)
-            
+
             valid_rooms = []
 
             for room_id in rooms:
@@ -98,7 +95,7 @@ def user_registration(request):
             if not EndUser.objects.filter(id=user_id).exists():
                 user = EndUser.objects.create(id=user_id, name=name, last_name=last_name, email=email)
                 user.save()
-            else: 
+            else:
                 user = EndUser.objects.get(id=user_id)
 
             # TODO we need a token generator function
@@ -107,8 +104,8 @@ def user_registration(request):
 
             for room in valid_rooms:
                 permission.rooms.add(room)
-            
-            # TODO send email with link            
+
+            # TODO send email with link
 
             return HttpResponseRedirect('../generate/%s' % permission.id)
 
@@ -147,6 +144,7 @@ def generate_qr(request, id):
                 'name': name,
             }
         )
+
 
 @csrf_exempt
 def check_room_access(request):

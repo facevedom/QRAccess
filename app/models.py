@@ -46,6 +46,7 @@ class EndUser(models.Model):
     def __str__(self):
         return '%s - %s %s' % (self.id, self.name, self.last_name)
 
+
 class Permission(models.Model):
     user_id = models.ForeignKey(EndUser)
     event = models.ForeignKey(Event)
