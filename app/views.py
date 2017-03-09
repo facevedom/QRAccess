@@ -8,6 +8,8 @@ from datetime import datetime
 from app.forms import User_self_registration
 from app.forms import Login
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import authenticate
+from django.contrib.auth import login
 from django.contrib.auth import logout
 from app.models import Permission
 from app.models import EndUser
@@ -114,29 +116,6 @@ def user_registration(request):
             return HttpResponse('Datos inválidos')
 
     return HttpResponse('Algo sucedió')
-
-
-def login(request):
-    if request.method == 'POST':
-        form = Login(request.POST)
-        if form.is_valid():
-            return HttpResponseRedirect('/contact/thanks/')
-    else:
-        form = Login()
-    return render(
-        request,
-        'app/login.html',
-        {
-           'form': form,
-           'year': datetime.now().year,
-           'title': 'Login'
-        }
-    )
-
-
-def logout_user(request):
-    logout(request)
-    return render(request, 'logged out')
 
 
 def generate_qr(request, id):
