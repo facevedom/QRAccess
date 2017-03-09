@@ -106,6 +106,8 @@ def user_registration(request):
             for room in valid_rooms:
                 permission.rooms.add(room)
             
+            # TODO send email with link            
+
             return HttpResponseRedirect('../generate/%s' % permission.id)
 
         else:
@@ -145,6 +147,7 @@ def generate_qr(request, id):
         company = permission.event.company
         start_date = permission.event.start_date
         end_date = permission.event.end_date
+        name = permission.user_id.name
 
     except Permission.DoesNotExist:
         return HttpResponse('código inválido')
@@ -162,5 +165,33 @@ def generate_qr(request, id):
                 'end_date': end_date,
                 'year': datetime.now().year,
                 'title': 'QR Generated',
+                'name': name,
             }
         )
+
+@csrf_exempt
+def check_room_access(request):
+
+    if request.method == 'POST':
+
+        permission_id = request.POST.get('permission_id')
+        room_id = request.POST.get('room_id')
+
+        try:
+            permission = Permission.objects.get(id=permission_id)
+        except Permission.DoesNotExist:
+            return HttpResponse(False)
+
+        try:
+            room = Room.objects.get(id=room_id)
+        except Room.DoesNotExist:
+            return HttpResponse(False)
+
+        for room in permission.rooms.all():
+            if room.id == room_id:
+                return HttpResponse(True)
+
+        return HttpResponse(False)
+
+    else:
+        return HttpResponse(False)
