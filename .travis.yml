@@ -10,6 +10,7 @@ before_script:
   - flake8 .
 script:
   - coverage run --source=app manage.py test
+  - cat .coverage
   
 addons:
     code_climate:
