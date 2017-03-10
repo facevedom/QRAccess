@@ -13,4 +13,4 @@ script:
   - coverage run --source=app manage.py test
 
 after_sucess:
-  - CODECLIMATE_REPO_TOKEN=dd3780ba82be65f3f7582d0bf5148299f7bc9c7828da3efb674d1732ce7a5c88 codeclimate-test-reporter
+  - codeclimate-test-reporter --token dd3780ba82be65f3f7582d0bf5148299f7bc9c7828da3efb674d1732ce7a5c88
