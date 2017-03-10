@@ -1,3 +1,7 @@
+addons:
+    code_climate:
+        repo_token: dd3780ba82be65f3f7582d0bf5148299f7bc9c7828da3efb674d1732ce7a5c88
+
 language: python
 python:
   - 3.5
@@ -10,7 +14,3 @@ before_script:
   - flake8 .
 script:
   - coverage run --source=app manage.py test
-  
-addons:
-    code_climate:
-        repo_token: dd3780ba82be65f3f7582d0bf5148299f7bc9c7828da3efb674d1732ce7a5c88
