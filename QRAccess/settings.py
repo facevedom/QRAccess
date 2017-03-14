@@ -26,7 +26,7 @@ SECRET_KEY = '5d4cf7c4-9671-4155-a0e0-1dfea8b8c933'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['testserver', '127.0.0.1']
+ALLOWED_HOSTS = ['testserver', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -135,3 +135,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+
+# Default redirection after login
+LOGIN_REDIRECT_URL = '/'

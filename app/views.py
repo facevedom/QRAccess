@@ -14,6 +14,7 @@ from app.models import Room
 
 # for testing only
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 
 def home(request):
@@ -58,60 +59,58 @@ def about(request):
 
 
 @csrf_exempt
+@require_POST
 def user_registration(request):
-    if request.method == 'POST':
 
-        form = User_self_registration(request.POST)
+    form = User_self_registration(request.POST)
 
-        if form.is_valid():
-            data = form.cleaned_data
-            user_id = data['user_id']
-            name = data['name']
-            last_name = data['last_name']
-            email = data['email']
-            event_id = data['event_id']
-            rooms = data['rooms'].split(",")
+    if form.is_valid():
+        data = form.cleaned_data
+        user_id = data['user_id']
+        name = data['name']
+        last_name = data['last_name']
+        email = data['email']
+        event_id = data['event_id']
+        rooms = data['rooms'].split(",")
 
-            if not Event.objects.filter(event_id=event_id).exists():
-                return HttpResponse('Evento inválido')
-            else:
-                event = Event.objects.get(event_id=event_id)
-
-            valid_rooms = []
-
-            for room_id in rooms:
-                if not Room.objects.filter(id=room_id).exists():
-                    return HttpResponse('%s no es un ID de room válido' % room_id)
-                else:
-                    room = Room.objects.get(id=room_id)
-                    valid_rooms.append(room)
-
-                if event.company != room.company:
-                    return HttpResponse('%s no pertenece a %s' % (room_id, event.company))
-
-            # TODO what if id is already registered but with a different email or name?
-
-            if not EndUser.objects.filter(id=user_id).exists():
-                user = EndUser.objects.create(id=user_id, name=name, last_name=last_name, email=email)
-                user.save()
-            else:
-                user = EndUser.objects.get(id=user_id)
-
-            # TODO we need a token generator function
-
-            permission = Permission.objects.create(user_id=user, event=event, id="RANDOM")
-
-            for room in valid_rooms:
-                permission.rooms.add(room)
-
-            # TODO send email with link
-
-            return HttpResponseRedirect('../generate/%s' % permission.id)
-
+        if not Event.objects.filter(event_id=event_id).exists():
+            return HttpResponse('Evento inválido')
         else:
-            return HttpResponse('Datos inválidos')
+            event = Event.objects.get(event_id=event_id)
 
-    return HttpResponse('Algo sucedió')
+        valid_rooms = []
+
+        for room_id in rooms:
+            if not Room.objects.filter(id=room_id).exists():
+                return HttpResponse('%s no es un ID de room válido' % room_id)
+            else:
+                room = Room.objects.get(id=room_id)
+                valid_rooms.append(room)
+
+            if event.company != room.company:
+                return HttpResponse('%s no pertenece a %s' % (room_id, event.company))
+
+        # TODO what if id is already registered but with a different email or name?
+
+        if not EndUser.objects.filter(id=user_id).exists():
+            user = EndUser.objects.create(id=user_id, name=name, last_name=last_name, email=email)
+            user.save()
+        else:
+            user = EndUser.objects.get(id=user_id)
+
+        # TODO we need a token generator function
+
+        permission = Permission.objects.create(user_id=user, event=event, id="RANDOM")
+
+        for room in valid_rooms:
+            permission.rooms.add(room)
+
+        # TODO send email with link
+
+        return HttpResponseRedirect('../generate/%s' % permission.id)
+
+    else:
+        return HttpResponse('Datos inválidos')
 
 
 def generate_qr(request, id):
