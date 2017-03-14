@@ -36,6 +36,7 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
+/* delete this */ 
 .align-bottom {
      vertical-align: bottom;
      float: none;
