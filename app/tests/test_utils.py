@@ -1,6 +1,7 @@
 from django.test import TestCase
 from app.utils import random_int
 from app.utils import random_string
+from app.utils import generate_token
 
 
 class UtilsTest(TestCase):
@@ -27,3 +28,7 @@ class UtilsTest(TestCase):
         self.assertLessEqual(random_number, 9999999999)
 
         self.assertTrue(isinstance(random_number, int))
+
+    def test_utils_generate_token(self):
+        self.assertRegex(generate_token(), '[A-Za-z0-9-_]+')
+        self.assertNotEquals(generate_token(), generate_token())

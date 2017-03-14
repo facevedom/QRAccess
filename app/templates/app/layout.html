@@ -11,6 +11,7 @@
     {% if generating_qr %}
     <script src="{% static 'app/scripts/kjua-0.1.1.min.js' %}"></script>
     {% endif %}
+
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
 </head>
 
@@ -50,6 +51,22 @@
     </div>
 
     <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+
+    {% if creating_event %}
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"> 
+    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.datepicker').datepicker();
+        });
+
+        document.getElementById("id_start_date").className += " form-control";
+        document.getElementById("id_end_date").className += " form-control";
+
+        document.getElementById("id_allowed_rooms").className += " form-control";
+    </script>
+    {% endif %}
+
     <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
     <script src="{% static 'app/scripts/respond.js' %}"></script>
 {% block scripts %}{% endblock %}

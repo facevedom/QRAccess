@@ -19,10 +19,12 @@ urlpatterns = [
     url(r'^contact$', app.views.contact, name='contact'),
     url(r'^about$', app.views.about, name='about'),
     url(r'^user/registration$', app.views.user_registration, name='registration'),
-    url(r'^generate/([A-Za-z0-9]+)$', app.views.generate_qr, name='generate'),
+    url(r'^create/event$', app.views.create_event, name='create_event'),
+    url(r'^generate/([A-Za-z0-9-_]+)$', app.views.generate_qr, name='generate'),
     url(r'^check-access$', app.views.check_room_access),
     url(r'^login/$', auth_views.login, {'extra_context':{'year':datetime.now().year}}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    url(r'^create/event$', app.views.create_event, name='create_event'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 ]

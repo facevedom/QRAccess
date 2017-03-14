@@ -5,16 +5,18 @@ Definition of views.
 from django.shortcuts import render
 from django.http import HttpRequest
 from datetime import datetime
+from datetime import date
 from app.forms import User_self_registration
+from app.forms import EventCreation
 from django.http import HttpResponse, HttpResponseRedirect
+from app.utils import generate_token
 from app.models import Permission
 from app.models import EndUser
 from app.models import Event
 from app.models import Room
-
-# for testing only
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt # for testing only
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -98,9 +100,9 @@ def user_registration(request):
         else:
             user = EndUser.objects.get(id=user_id)
 
-        # TODO we need a token generator function
+        token_id = generate_token()
 
-        permission = Permission.objects.create(user_id=user, event=event, id="RANDOM")
+        permission = Permission.objects.create(user_id=user, event=event, id=token_id)
 
         for room in valid_rooms:
             permission.rooms.add(room)
@@ -146,7 +148,6 @@ def generate_qr(request, id):
 
 @csrf_exempt
 def check_room_access(request):
-
     if request.method == 'POST':
 
         permission_id = request.POST.get('permission_id')
@@ -155,6 +156,12 @@ def check_room_access(request):
         try:
             permission = Permission.objects.get(id=permission_id)
         except Permission.DoesNotExist:
+            return HttpResponse(False)
+
+        start_date = permission.event.start_date
+        end_date = permission.event.end_date
+
+        if not (start_date <= date.today() <= end_date):
             return HttpResponse(False)
 
         try:
@@ -170,3 +177,25 @@ def check_room_access(request):
 
     else:
         return HttpResponse(False)
+
+
+@login_required
+def create_event(request):
+    if request.method == 'POST':
+        form = EventCreation(request.POST)
+        if form.is_valid():
+            # check company, insert into db
+            pass
+    else:
+        form = EventCreation()
+
+    return render(
+        request,
+        'event/create.html',
+        {
+           'creating_event': True,
+           'form': form,
+           'year': datetime.now().year,
+           'title': 'Create an event'
+        }
+    )
