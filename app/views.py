@@ -184,10 +184,13 @@ def create_event(request):
     if request.method == 'POST':
         form = EventCreation(request.POST)
         if form.is_valid():
+            data = form.cleaned_data
+            return HttpResponse(data['allowed_rooms'])
             # check company, insert into db
-            pass
+        else:
+            return HttpResponse('error validando')
     else:
-        form = EventCreation()
+        form = EventCreation(user=request.user)
 
     return render(
         request,

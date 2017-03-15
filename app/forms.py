@@ -4,6 +4,9 @@ Definition of forms.
 
 from django import forms
 from functools import partial
+from app.models import Room
+from app.models import Company
+
 DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 
 
@@ -17,20 +20,15 @@ class User_self_registration(forms.Form):
 
 
 class EventCreation(forms.Form):
+
+    def __init__(self, user=None, *args, **kwargs):
+        super(EventCreation, self).__init__(*args, **kwargs)
+        if user:
+            company = Company.objects.get(name=user.username)
+            self.fields['allowed_rooms'] = forms.ModelMultipleChoiceField(queryset=Room.objects.filter(company=company).order_by('name'))
+
+    
     name = forms.CharField()
-    company = forms.CharField()
     start_date = forms.DateField(widget=DateInput())
     end_date = forms.DateField(widget=DateInput())
-    CHOICES = (('a','a'),
-               ('b','b'),
-               ('c','c'),
-               ('d','d'),
-               ('d','e'),
-               ('d','de'),
-               ('d','dr'),
-               ('d','dr'),
-               ('d','duyi'),
-               ('d','yd'),
-               ('d','yid'),
-               ('d','od'),)
-    allowed_rooms = forms.MultipleChoiceField(choices=CHOICES)
+    
