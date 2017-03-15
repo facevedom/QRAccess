@@ -17,4 +17,4 @@ A physical access manager through QR codes
 
 ---
 
-_Developed for PSL's Special Academic Practice in association with Universidad Nacional de Colombia - Sede Medellín_
+_Developed for PSL's Special Academic Practice in association with Universidad Nacional de Colombia - Sede MedellÃ­n_
