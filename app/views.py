@@ -14,7 +14,7 @@ from app.models import Permission
 from app.models import EndUser
 from app.models import Event
 from app.models import Room
-from django.views.decorators.csrf import csrf_exempt # for testing only
+from django.views.decorators.csrf import csrf_exempt  # for testing only
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 
