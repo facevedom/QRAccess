@@ -16,16 +16,17 @@ class User_self_registration(forms.Form):
     email = forms.EmailField()
     user_id = forms.CharField()
     event_id = forms.CharField()
-    rooms = forms.CharField()
 
 
 class EventCreation(forms.Form):
 
-    def __init__(self, user=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        logged_user = kwargs.pop('logged_user', None)
         super(EventCreation, self).__init__(*args, **kwargs)
-        if user:
-            company = Company.objects.get(name=user.username)
-            self.fields['allowed_rooms'] = forms.ModelMultipleChoiceField(queryset=Room.objects.filter(company=company).order_by('name'))
+        if logged_user:
+            company = Company.objects.get(name=logged_user)
+            self.fields['allowed_rooms'] = forms.ModelMultipleChoiceField(queryset=Room.objects.filter(company=company).order_by('name'),
+               widget=forms.CheckboxSelectMultiple)
 
     
     name = forms.CharField()

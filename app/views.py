@@ -73,24 +73,11 @@ def user_registration(request):
         last_name = data['last_name']
         email = data['email']
         event_id = data['event_id']
-        rooms = data['rooms'].split(",")
 
         if not Event.objects.filter(event_id=event_id).exists():
             return HttpResponse('Evento inválido')
         else:
             event = Event.objects.get(event_id=event_id)
-
-        valid_rooms = []
-
-        for room_id in rooms:
-            if not Room.objects.filter(id=room_id).exists():
-                return HttpResponse('%s no es un ID de room válido' % room_id)
-            else:
-                room = Room.objects.get(id=room_id)
-                valid_rooms.append(room)
-
-            if event.company != room.company:
-                return HttpResponse('%s no pertenece a %s' % (room_id, event.company))
 
         # TODO what if id is already registered but with a different email or name?
 
@@ -104,9 +91,6 @@ def user_registration(request):
 
         permission = Permission.objects.create(user_id=user, event=event, id=token_id)
 
-        for room in valid_rooms:
-            permission.rooms.add(room)
-
         # TODO send email with link
 
         return HttpResponseRedirect('../generate/%s' % permission.id)
@@ -118,11 +102,11 @@ def user_registration(request):
 def generate_qr(request, id):
     try:
         permission = Permission.objects.get(id=id)
-        allowed_rooms = permission.rooms
         event = permission.event
-        company = permission.event.company
-        start_date = permission.event.start_date
-        end_date = permission.event.end_date
+        allowed_rooms = event.rooms
+        company = event.company
+        start_date = event.start_date
+        end_date = event.end_date
         name = permission.user_id.name
 
     except Permission.DoesNotExist:
@@ -168,10 +152,10 @@ def check_room_access(request):
             room = Room.objects.get(id=room_id)
         except Room.DoesNotExist:
             return HttpResponse(False)
-
-        for room in permission.rooms.all():
-            if room.id == room_id:
-                return HttpResponse(True)
+        
+        # TODO replace by exists()
+        if permission.event.rooms.all().filter(id=room_id).exists():
+            return HttpResponse(True)
 
         return HttpResponse(False)
 
@@ -181,16 +165,19 @@ def check_room_access(request):
 
 @login_required
 def create_event(request):
-    if request.method == 'POST':
-        form = EventCreation(request.POST)
+    if request.method == 'POST':    
+        form = EventCreation(request.POST, logged_user=request.user.username)
         if form.is_valid():
             data = form.cleaned_data
+            for room in data['allowed_rooms']:
+                pass
+
             return HttpResponse(data['allowed_rooms'])
             # check company, insert into db
         else:
             return HttpResponse('error validando')
     else:
-        form = EventCreation(user=request.user)
+        form = EventCreation(logged_user=request.user.username)
 
     return render(
         request,

@@ -14,18 +14,6 @@ class Company(models.Model):
         return self.name
 
 
-class Event(models.Model):
-    # TODO perhaps add Sponsors for events?
-    name = models.CharField(max_length=150)
-    company = models.ForeignKey(Company)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    event_id = models.CharField(max_length=50, primary_key=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Room(models.Model):
     name = models.CharField(max_length=150)
     company = models.ForeignKey(Company)
@@ -34,7 +22,20 @@ class Room(models.Model):
     id = models.CharField(max_length=150, primary_key=True)
 
     def __str__(self):
-        return '%s @ %s' % (self.name, self.company)
+        return '%s' % (self.name)
+
+
+class Event(models.Model):
+    # TODO perhaps add Sponsors for events?
+    name = models.CharField(max_length=150)
+    company = models.ForeignKey(Company)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    event_id = models.CharField(max_length=50, primary_key=True)
+    rooms = models.ManyToManyField(Room, blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 class EndUser(models.Model):
@@ -50,7 +51,6 @@ class EndUser(models.Model):
 class Permission(models.Model):
     user_id = models.ForeignKey(EndUser)
     event = models.ForeignKey(Event)
-    rooms = models.ManyToManyField(Room, blank=True)
     id = models.CharField(max_length=150, primary_key=True)
 
     def __str__(self):
