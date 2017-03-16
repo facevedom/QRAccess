@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, {'extra_context':{'title':'Login', 'year':datetime.now().year}}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^create/event$', app.views.create_event, name='create_event'),
+    url(r'^delete/event/(?P<event_id>[A-Za-z0-9-_]+)$', app.views.delete_event, name='delete_event'),
+    url(r'^list/events$', app.views.list_events, name='list_events'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 ]

@@ -220,3 +220,37 @@ def create_event(request):
            'title': 'Create an event'
         }
     )
+
+@login_required
+def list_events(request):
+    logged_user = request.user.username
+    # TODO implement paginator, it comes in handy here
+    events = Company.objects.get(name=logged_user).event_set.all().order_by('-start_date')
+    if events.exists():
+        return render(
+            request,
+            'event/list.html',
+            {
+               'events': events,
+               'year': datetime.now().year,
+               'title': 'Your events'
+            }
+        )
+    return error_happened(request, 'You have no events to list')
+
+
+@login_required
+def delete_event(request, event_id):
+    logged_user = request.user.username
+
+    try:
+        company = Company.objects.get(name=logged_user)
+        event = Event.objects.get(event_id=event_id, company=company)
+    except Event.DoesNotExist:
+        return error_happened(request, 'Invalid event')
+    except Company.DoesNotExist:
+        return error_happened(request, 'Do you even hack bro?')
+
+    event.delete()
+
+    return success_happened(request, 'Succesfully deleted the event %s' % event.name)

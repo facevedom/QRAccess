@@ -10,3 +10,8 @@
      float: none;
      display: table-cell;
 }
+
+.table tbody>tr>td.vert-align
+{
+    vertical-align: middle;
+}

@@ -3,6 +3,7 @@ Definition of models.
 """
 
 from django.db import models
+from datetime import date
 
 
 class Company(models.Model):
@@ -34,6 +35,18 @@ class Event(models.Model):
     end_date = models.DateField()
     event_id = models.CharField(max_length=50, primary_key=True)
     rooms = models.ManyToManyField(Room, blank=True)
+
+    @property
+    def ongoing(self):
+        return self.start_date <= date.today() <= self.end_date
+
+    @property
+    def past(self):
+        return date.today() > self.end_date
+
+    @property
+    def future(self):
+        return self.start_date > date.today()
 
     def __str__(self):
         return self.name
