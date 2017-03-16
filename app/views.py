@@ -14,6 +14,7 @@ from app.models import Permission
 from app.models import EndUser
 from app.models import Event
 from app.models import Room
+from app.models import Company
 from django.views.decorators.csrf import csrf_exempt  # for testing only
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
@@ -59,6 +60,25 @@ def about(request):
         }
     )
 
+def error_happened(request, message):
+    return render(
+        request,
+        'app/error.html',
+        {
+            'title': 'Oops',
+            'message': message,
+        }
+    )
+
+def success_happened(request, message):
+    return render(
+        request,
+        'app/success.html',
+        {
+            'title': 'Done!',
+            'message': message,
+        }
+    )
 
 @csrf_exempt
 @require_POST
@@ -110,7 +130,7 @@ def generate_qr(request, id):
         name = permission.user_id.name
 
     except Permission.DoesNotExist:
-        return HttpResponse('código inválido')
+        return error_happened(request, 'Invalid code for QR generation')
     else:
         return render(
             request,
@@ -165,17 +185,28 @@ def check_room_access(request):
 
 @login_required
 def create_event(request):
-    if request.method == 'POST':    
-        form = EventCreation(request.POST, logged_user=request.user.username)
+    if request.method == 'POST':
+
+        logged_user = request.user.username
+        form = EventCreation(request.POST, logged_user=logged_user)
+
         if form.is_valid():
             data = form.cleaned_data
-            for room in data['allowed_rooms']:
-                pass
+            company = Company.objects.get(name=logged_user)
 
-            return HttpResponse(data['allowed_rooms'])
-            # check company, insert into db
-        else:
-            return HttpResponse('error validando')
+            event = Event.objects.create(
+                        name=data['name'],
+                        company=company,
+                        start_date=data['start_date'],
+                        end_date=data['end_date'],
+                        event_id=generate_token(),
+                        description=data['description']
+                    )
+            for room in data['allowed_rooms']:
+                event.rooms.add(room)
+
+            return success_happened(request, 'Succesfully created the event %s' % data['name'])
+
     else:
         form = EventCreation(logged_user=request.user.username)
 
