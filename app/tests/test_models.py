@@ -4,11 +4,10 @@ from app.models import Room
 from app.models import Company
 from app.models import Event
 from app.models import Permission
-
 from datetime import datetime
 
-class ModelsTest(TestCase):
 
+class ModelsTest(TestCase):
 
     def test_saving_and_retrieving_models(self):
         company = Company()
