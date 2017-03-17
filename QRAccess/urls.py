@@ -22,11 +22,11 @@ urlpatterns = [
     url(r'^create/event$', app.views.create_event, name='create_event'),
     url(r'^generate/([A-Za-z0-9-_]+)$', app.views.generate_qr, name='generate'),
     url(r'^check-access$', app.views.check_room_access),
-    url(r'^login/$',
+    url(
+        r'^login/$',
         auth_views.login,
         {'extra_context': {'title': 'Login', 'year': datetime.now().year}},
-        name='login'
-    ),
+        name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^create/event$', app.views.create_event, name='create_event'),
     url(r'^delete/event/(?P<event_id>[A-Za-z0-9-_]+)$', app.views.delete_event, name='delete_event'),
