@@ -1,0 +1,31 @@
+﻿{% extends "app/layout_empty_center.html" %}
+
+{% block content %}
+
+{% load customfilters %}
+{% load staticfiles %}
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <img src="{% static 'app/content/images/success.png' %}" class="img-responsive center-block" alt="Responsive image">
+        <br />
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 class="panel-title">Done!</h3>
+          </div>
+          <div class="panel-body">
+            {% if message %}
+                {{ message }}
+            {% else %}
+            The action was successful
+            {% endif %}
+          </div>
+          <div class="panel-footer">
+              <a href="{% url 'home' %}">Alright, take me home</a>
+          </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
