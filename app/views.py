@@ -114,11 +114,9 @@ def user_registration(request):
         permission = Permission.objects.create(user_id=user, event=event, id=token_id)
 
         # TODO send email with link
-
-        return HttpResponseRedirect('../generate/%s' % permission.id)
-
+        return HttpResponse(token_id)
     else:
-        return HttpResponse('Datos inválidos')
+        return HttpResponse(False)
 
 
 def generate_qr(request, id):

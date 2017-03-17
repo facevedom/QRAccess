@@ -23,11 +23,22 @@ class AccessTest(TestCase):
                         start_date=datetime.today(),
                         end_date=datetime.today() + timedelta(days=3)
                     )
+        self.finished_event = Event.objects.create(
+                        event_id='old-3v3nt',
+                        company=self.company,
+                        start_date=datetime.today() - timedelta(days=20),
+                        end_date=datetime.today() - timedelta(days=3)
+                    )
         self.event.rooms.add(self.first_room)
         self.event.rooms.add(self.second_room)
         self.enduser = EndUser.objects.create(id='u53r')
 
         self.permission = Permission.objects.create(pk='permission1', user_id=self.enduser, event=self.event)
+        self.expired_permission = Permission.objects.create(
+                                    pk='permission2',
+                                    user_id=self.enduser,
+                                    event=self.finished_event
+                                   )
 
     def test_check_room_access(self):
         response = self.client.post(
@@ -56,6 +67,16 @@ class AccessTest(TestCase):
                         data={
                             'permission_id': self.permission.pk,
                             'room_id': 'r00m4'
+                        }
+                    )
+        self.assertEquals(response.content.decode(), 'False')
+
+    def test_invalid_date(self):
+        response = self.client.post(
+                        '/check-access',
+                        data={
+                            'permission_id': self.expired_permission.pk,
+                            'room_id': self.first_room.pk
                         }
                     )
         self.assertEquals(response.content.decode(), 'False')

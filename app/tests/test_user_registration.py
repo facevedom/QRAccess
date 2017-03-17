@@ -30,7 +30,7 @@ class UserRegistrationTest(TestCase):
 
     def test_user_registration_empty(self):
         # tests for validation failure if user's data is empty
-        form_data = {'email': '', 'user_id': '', 'name': '', 'last_name': '', 'event_id': '', 'rooms': ''}
+        form_data = {'email': '', 'user_id': '', 'name': '', 'last_name': '', 'event_id': ''}
         form = User_self_registration(data=form_data)
         self.assertFalse(form.is_valid())
 
@@ -46,8 +46,7 @@ class UserRegistrationTest(TestCase):
                 'name': 'James',
                 'last_name': 'Logan',
                 'email': 'logan@xmen.com',
-                'event_id': '3v3nt',
-                'rooms': 'r00m1,r00m2,r00m3'
+                'event_id': '3v3nt'
             }
         )
         self.assertEqual(Permission.objects.count(), 1)
@@ -63,15 +62,14 @@ class UserRegistrationTest(TestCase):
                 'name': 'James',
                 'last_name': 'Logan',
                 'email': 'logan@xmen.com',
-                'event_id': '3v3nt',
-                'rooms': 'r00m1,r00m2,r00m3'
+                'event_id': '3v3nt'
             }
         )
         self.assertEqual(EndUser.objects.count(), 2)
         new_user = EndUser.objects.first()
         self.assertEqual(new_user.pk, 'n3wu53r')
 
-    def test_user_registration_redirects_to_generate_qr(self):
+    def test_user_registration_returns_permission_id(self):
         response = self.client.post(
             '/user/registration',
             data={
@@ -79,18 +77,24 @@ class UserRegistrationTest(TestCase):
                 'name': 'James',
                 'last_name': 'Logan',
                 'email': 'logan@xmen.com',
-                'event_id': '3v3nt',
-                'rooms': 'r00m1,r00m2,r00m3'
+                'event_id': '3v3nt'
             }
         )
         new_permission = Permission.objects.first()
-        self.assertRedirects(response, '/generate/%s' % new_permission.pk)
+        self.assertEquals(response.content.decode(), new_permission.pk)
 
-    def test_user_access_the_link_received(self):
-        # tests for validation failure if user's data is empty
-        form_data = {'email': '', 'id': '', 'name': '', 'last_name': '', 'event_id': ''}
-        form = User_self_registration(data=form_data)
-        self.assertFalse(form.is_valid())
+    def test_user_registration_invalid(self):
+        response = self.client.post(
+            '/user/registration',
+            data={
+                'user_id': '',
+                'name': 'James',
+                'last_name': 'Logan',
+                'email': 'logan@xmen.com',
+                'event_id': '3v3nt'
+            }
+        )
+        self.assertEquals(response.content.decode(), 'False')
 
     def test_generate_qr_returns_correct_html(self):
         """Tests generate QR page."""
@@ -101,3 +105,7 @@ class UserRegistrationTest(TestCase):
                     )
         response = self.client.get('/generate/%s' % permission.pk)
         self.assertTemplateUsed(response, 'end_user/generate_qr.html')
+
+    def test_generate_qr_invalid_code_requested(self):
+        response = self.client.get('/generate/%s' % 'inv4l1dCo_dE')
+        self.assertTemplateUsed(response, 'app/error.html')

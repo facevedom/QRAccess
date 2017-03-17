@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
     <link rel="shortcut icon" type="image/png" href="{% static 'app/content/images/favicon.ico' %}">
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
     {% if generating_qr %}
     <script src="{% static 'app/scripts/kjua-0.1.1.min.js' %}"></script>
     {% endif %}
@@ -59,11 +61,8 @@
         </footer>
     </div>
 
-    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
-
     {% if creating_event %}
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"> 
-    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">    
     <script>
         $(document).ready(function() {
             $('.datepicker').datepicker();
