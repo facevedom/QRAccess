@@ -1,5 +1,4 @@
-from django.test import TestCase 
-
+from django.test import TestCase
 from app.models import EndUser
 from app.models import Room
 from app.models import Company
@@ -9,6 +8,7 @@ from app.models import Permission
 from datetime import datetime
 
 class ModelsTest(TestCase):
+
 
     def test_saving_and_retrieving_models(self):
         company = Company()
@@ -44,8 +44,8 @@ class ModelsTest(TestCase):
         event = Event()
         event.name = 'My event'
         event.company = company
-        event.start_date = datetime(2017,3,16)
-        event.end_date = datetime(2017,3,21)
+        event.start_date = datetime(2017, 3, 16)
+        event.end_date = datetime(2017, 3, 21)
         event.event_id = '3v3nt'
         event.rooms.add(first_room)
         event.rooms.add(second_room)
@@ -54,7 +54,7 @@ class ModelsTest(TestCase):
 
         enduser = EndUser()
         enduser.id = 'u53r'
-        enduser.name ='Sebastian'
+        enduser.name = 'Sebastian'
         enduser.last_name = 'Villegas'
         enduser.email = 'svillegas@qraccess.com'
         enduser.save()
@@ -90,4 +90,3 @@ class ModelsTest(TestCase):
         self.assertEqual(saved_permissions.count(), 2)
         self.assertEqual(saved_permissions[0], first_permission)
         self.assertEqual(saved_permissions[1], second_permission)
-        

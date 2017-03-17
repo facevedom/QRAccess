@@ -25,9 +25,11 @@ class EventCreation(forms.Form):
         super(EventCreation, self).__init__(*args, **kwargs)
         if logged_user:
             company = Company.objects.get(name=logged_user)
-            self.fields['allowed_rooms'] = forms.ModelMultipleChoiceField(queryset=Room.objects.filter(company=company).order_by('name'),
-               widget=forms.CheckboxSelectMultiple,
-               required=False)
+            self.fields['allowed_rooms'] = forms.ModelMultipleChoiceField(
+                                                queryset=Room.objects.filter(company=company).order_by('name'),
+                                                widget=forms.CheckboxSelectMultiple,
+                                                required=False
+                                           )
 
     name = forms.CharField()
     start_date = forms.DateField(widget=DateInput())

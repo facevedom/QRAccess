@@ -29,6 +29,7 @@ class UtilsTest(TestCase):
 
         self.assertTrue(isinstance(random_number, int))
 
+
     def test_utils_generate_token(self):
         self.assertRegex(generate_token(), '[A-Za-z0-9-_]+')
         self.assertNotEquals(generate_token(), generate_token())

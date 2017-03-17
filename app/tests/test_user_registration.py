@@ -1,8 +1,5 @@
 from django.test import TestCase
-from django.http import HttpRequest
-
 from app.forms import User_self_registration
-from app.views import user_registration
 from app.models import EndUser
 from app.models import Room
 from app.models import Company
@@ -13,9 +10,7 @@ from datetime import datetime
 
 
 class UserRegistrationTest(TestCase):
-    """
-        Tests for user story: EVE5
-    """
+
     def setUp(self):
         Company.objects.create(name='PSL', email='contact@psl.com.co', telephone='2761234')
         self.company = Company.objects.first()
@@ -24,7 +19,12 @@ class UserRegistrationTest(TestCase):
         Room.objects.create(id='r00m2', company=self.company, security_level=2)
         Room.objects.create(id='r00m3', company=self.company, security_level=3)
 
-        Event.objects.create(event_id='3v3nt', company=self.company, start_date=datetime(2017,4,12), end_date=datetime(2017,4,15))        
+        Event.objects.create(
+            event_id='3v3nt',
+            company=self.company,
+            start_date=datetime(2017, 4, 12),
+            end_date=datetime(2017, 4, 15)
+        )
 
         EndUser.objects.create(id='u53r')
 
@@ -94,9 +94,10 @@ class UserRegistrationTest(TestCase):
 
     def test_generate_qr_returns_correct_html(self):
         """Tests generate QR page."""
-        permission = Permission.objects.create(pk='93rm15s10n',
-                                  user_id=EndUser.objects.get(pk='u53r'),
-                                  event=Event.objects.get(pk='3v3nt')
-            )
+        permission = Permission.objects.create(
+                        pk='93rm15s10n',
+                        user_id=EndUser.objects.get(pk='u53r'),
+                        event=Event.objects.get(pk='3v3nt')
+                    )
         response = self.client.get('/generate/%s' % permission.pk)
         self.assertTemplateUsed(response, 'end_user/generate_qr.html')

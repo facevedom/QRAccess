@@ -60,6 +60,7 @@ def about(request):
         }
     )
 
+
 def error_happened(request, message):
     return render(
         request,
@@ -70,6 +71,7 @@ def error_happened(request, message):
         }
     )
 
+
 def success_happened(request, message):
     return render(
         request,
@@ -79,6 +81,7 @@ def success_happened(request, message):
             'message': message,
         }
     )
+
 
 @csrf_exempt
 @require_POST
@@ -168,12 +171,6 @@ def check_room_access(request):
         if not (start_date <= date.today() <= end_date):
             return HttpResponse(False)
 
-        try:
-            room = Room.objects.get(id=room_id)
-        except Room.DoesNotExist:
-            return HttpResponse(False)
-        
-        # TODO replace by exists()
         if permission.event.rooms.all().filter(id=room_id).exists():
             return HttpResponse(True)
 
@@ -220,6 +217,7 @@ def create_event(request):
            'title': 'Create an event'
         }
     )
+
 
 @login_required
 def list_events(request):

@@ -9,6 +9,7 @@ from app.models import Event
 from datetime import datetime
 from datetime import timedelta
 
+
 class AccessTest(TestCase):
 
     def setUp(self):
@@ -16,12 +17,17 @@ class AccessTest(TestCase):
         self.first_room = Room.objects.create(id='r00m1', company=self.company, security_level=1)
         self.second_room = Room.objects.create(id='r00m2', company=self.company, security_level=2)
         self.third_room = Room.objects.create(id='r00m3', company=self.company, security_level=3)
-        self.event = Event.objects.create(event_id='3v3nt', company=self.company, start_date=datetime.today(), end_date=datetime.today() + timedelta(days=3))
+        self.event = Event.objects.create(
+                        event_id='3v3nt',
+                        company=self.company,
+                        start_date=datetime.today(),
+                        end_date=datetime.today() + timedelta(days=3)
+                    )
         self.event.rooms.add(self.first_room)
         self.event.rooms.add(self.second_room)
         self.enduser = EndUser.objects.create(id='u53r')
 
-        self.permission = Permission.objects.create(pk = 'permission1', user_id = self.enduser, event = self.event)
+        self.permission = Permission.objects.create(pk='permission1', user_id=self.enduser, event=self.event)
 
     def test_check_room_access(self):
         response = self.client.post(
@@ -53,4 +59,3 @@ class AccessTest(TestCase):
                         }
                     )
         self.assertEquals(response.content.decode(), 'False')
-
