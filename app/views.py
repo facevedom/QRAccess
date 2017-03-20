@@ -183,7 +183,6 @@ def create_event(request):
 
         logged_user = request.user.username
         form = EventCreation(request.POST, logged_user=logged_user)
-
         if form.is_valid():
             data = form.cleaned_data
             company = Company.objects.get(name=logged_user)

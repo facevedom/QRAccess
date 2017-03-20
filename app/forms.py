@@ -37,6 +37,7 @@ class EventCreation(forms.Form):
     description = forms.CharField(widget=forms.Textarea)
 
     def clean(self):
+        cleaned_data = super(EventCreation, self).clean()
         start_date = self.cleaned_data.get("start_date")
         end_date = self.cleaned_data.get("end_date")
         if end_date < start_date:
