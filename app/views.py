@@ -8,6 +8,7 @@ from datetime import datetime
 from datetime import date
 from app.forms import EventCreation
 from app.forms import AttendeeRegistration
+from app.forms import CompanyForm
 from django.http import HttpResponse, HttpResponseRedirect
 from app.utils import generate_token
 from app.models import Permission
@@ -370,3 +371,50 @@ def add_attendee(request, event_id):
         }
     )
 
+
+@login_required
+def edit_event(request, event_id):
+    
+    event = Event.objects.get(event_id=event_id)
+
+    if request.method == 'POST':
+
+        logged_user = request.user.username
+        form = EventCreation(request.POST, logged_user=logged_user)
+        if form.is_valid():
+            data = form.cleaned_data
+            company = Company.objects.get(name=logged_user)
+            event.name = data['name']
+            event.company=company
+            event.start_date=data['start_date']
+            event.end_date=data['end_date']
+            event.description=data['description']
+            event.save()
+            event.rooms.clear()
+            for room in data['allowed_rooms']:
+                event.rooms.add(room)
+
+            return success_happened(request, 'Succesfully updated the event %s' % data['name'])
+
+    else:
+        form = EventCreation(
+                logged_user=request.user.username,
+                initial={'name': event.name,
+                         'start_date': event.start_date,
+                         'end_date': event.end_date,
+                         'description': event.description,
+                         'allowed_rooms': event.rooms.all
+                         }
+               )
+
+    return render(
+        request,
+        'event/create.html',
+        {
+           'creating_event': True,
+           'editing_event': True,
+           'form': form,
+           'year': datetime.now().year,
+           'title': 'Edit an event'
+        }
+    )

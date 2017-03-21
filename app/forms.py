@@ -3,19 +3,12 @@ Definition of forms.
 """
 
 from django import forms
+from django.forms import ModelForm
 from functools import partial
-from app.models import Room
 from app.models import Company
 
 DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 
-
-class User_self_registration(forms.Form):
-    name = forms.CharField()
-    last_name = forms.CharField()
-    email = forms.EmailField()
-    user_id = forms.CharField()
-    event_id = forms.CharField(widget=forms.HiddenInput)
 
 class AttendeeRegistration(forms.Form):
     name = forms.CharField()
@@ -49,3 +42,8 @@ class EventCreation(forms.Form):
         if end_date < start_date:
             msg = u"End date should be after start date."
             self._errors["start_date"] = self.error_class([msg])
+
+class CompanyForm(ModelForm):
+    class Meta:
+        model = Company
+        fields = ['name', 'email', 'telephone']
