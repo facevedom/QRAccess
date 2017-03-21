@@ -123,6 +123,7 @@ def generate_qr(request, id):
     try:
         permission = Permission.objects.get(id=id)
         event = permission.event
+        description = event.description
         allowed_rooms = event.rooms
         company = event.company
         start_date = event.start_date
@@ -146,6 +147,7 @@ def generate_qr(request, id):
                 'year': datetime.now().year,
                 'title': 'QR Generated',
                 'name': name,
+                'description': description,
             }
         )
 
@@ -235,6 +237,7 @@ def list_events(request):
 
 @login_required
 def delete_event(request, event_id):
+
     logged_user = request.user.username
 
     try:
@@ -242,8 +245,6 @@ def delete_event(request, event_id):
         event = Event.objects.get(event_id=event_id, company=company)
     except Event.DoesNotExist:
         return error_happened(request, 'Invalid event')
-    except Company.DoesNotExist:
-        return error_happened(request, 'Do you even hack bro?')
 
     event.delete()
 

@@ -80,3 +80,7 @@ class AccessTest(TestCase):
                         }
                     )
         self.assertEquals(response.content.decode(), 'False')
+
+    def test_no_GET_request(self):
+        response = self.client.get('/check-access')
+        self.assertEquals(response.content.decode(), 'False')

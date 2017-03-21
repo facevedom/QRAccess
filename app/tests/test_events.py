@@ -110,3 +110,34 @@ class AccessTest(TestCase):
         response = self.client.get('/list/events')
         self.assertContains(response, 'Test Event')
         self.assertContains(response, 'Second Test Event')
+    
+    def test_delete_not_logged(self):
+        Event.objects.create(
+            event_id='3v3nt',
+            name='Test Event',
+            description='Test Event desc',
+            company=self.company,
+            start_date=datetime(2017, 4, 12),
+            end_date=datetime(2017, 4, 15)
+        )
+        response = self.client.get('/delete/event/3v3nt')
+        self.assertEqual(response.status_code, 302)
+
+    def test_delete_invalid_event(self):
+        self.client.login(username='testcompany', password='12345')
+        response = self.client.get('/delete/event/invalidid90380384092834')
+        self.assertTemplateUsed(response, 'app/error.html')
+
+    def test_delete_event(self):
+        self.client.login(username='testcompany', password='12345')
+        Event.objects.create(
+            event_id='3v3nt',
+            name='Test Event',
+            description='Test Event desc',
+            company=self.company,
+            start_date=datetime(2017, 4, 12),
+            end_date=datetime(2017, 4, 15)
+        )
+        response = self.client.get('/delete/event/3v3nt')
+        self.assertEqual(Event.objects.count(), 0)
+        self.assertTemplateUsed(response, 'app/success.html')
