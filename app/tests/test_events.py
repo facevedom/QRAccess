@@ -141,3 +141,60 @@ class AccessTest(TestCase):
         response = self.client.get('/delete/event/3v3nt')
         self.assertEqual(Event.objects.count(), 0)
         self.assertTemplateUsed(response, 'app/success.html')
+
+    def test_login_required_on_GET_for_details(self):
+        Event.objects.create(
+            event_id='3v3nt',
+            name='Test Event',
+            description='Test Event desc',
+            company=self.company,
+            start_date=datetime(2017, 4, 12),
+            end_date=datetime(2017, 4, 15)
+        )
+        response = self.client.get('/details/event/3v3nt')
+        self.assertEqual(response.status_code, 302)
+
+    def test_proper_render_details(self):
+        
+        self.client.login(username='testcompany', password='12345')
+        
+        Event.objects.create(
+            event_id='3v3nt',
+            name='Test Event',
+            description='Test Event desc',
+            company=self.company,
+            start_date=datetime(2017, 4, 12),
+            end_date=datetime(2017, 4, 15)
+        )
+
+        EndUser.objects.create(id='u53r')
+
+        permission = Permission.objects.create(
+                        pk='93rm15s10n',
+                        user_id=EndUser.objects.get(pk='u53r'),
+                        event=Event.objects.get(pk='3v3nt')
+                    )
+
+        response = self.client.get('/details/event/3v3nt')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Test Event')
+        self.assertContains(response, 'u53r')
+        self.assertTemplateUsed(response, 'event/details.html')
+
+    def test_details_not_owning_event(self):
+        # tests failure when loading details if requested event doesn't belong to logged company
+        self.client.login(username='testcompany', password='12345')
+
+        company = Company.objects.create(name='cmpny2', email='contact@test.com.co', telephone='2761234')
+
+        Event.objects.create(
+            event_id='3v3nt',
+            name='Test Event',
+            description='Test Event desc',
+            company=company,
+            start_date=datetime(2017, 4, 12),
+            end_date=datetime(2017, 4, 15)
+        )
+
+        response = self.client.get('/details/event/3v3nt')
+        self.assertTemplateUsed(response, 'app/error.html')   

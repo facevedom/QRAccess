@@ -1,5 +1,5 @@
 from django.test import TestCase
-from app.forms import User_self_registration
+from app.forms import AttendeeRegistration
 from app.models import EndUser
 from app.models import Room
 from app.models import Company
@@ -31,7 +31,7 @@ class UserRegistrationTest(TestCase):
     def test_user_registration_empty(self):
         # tests for validation failure if user's data is empty
         form_data = {'email': '', 'user_id': '', 'name': '', 'last_name': '', 'event_id': ''}
-        form = User_self_registration(data=form_data)
+        form = AttendeeRegistration(data=form_data)
         self.assertFalse(form.is_valid())
 
     def test_user_registration_response_405_after_GET(self):
@@ -95,17 +95,3 @@ class UserRegistrationTest(TestCase):
             }
         )
         self.assertEquals(response.content.decode(), 'False')
-
-    def test_generate_qr_returns_correct_html(self):
-        """Tests generate QR page."""
-        permission = Permission.objects.create(
-                        pk='93rm15s10n',
-                        user_id=EndUser.objects.get(pk='u53r'),
-                        event=Event.objects.get(pk='3v3nt')
-                    )
-        response = self.client.get('/generate/%s' % permission.pk)
-        self.assertTemplateUsed(response, 'end_user/generate_qr.html')
-
-    def test_generate_qr_invalid_code_requested(self):
-        response = self.client.get('/generate/%s' % 'inv4l1dCo_dE')
-        self.assertTemplateUsed(response, 'app/error.html')

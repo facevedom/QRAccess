@@ -13,12 +13,16 @@
     {% if generating_qr %}
     <script src="{% static 'app/scripts/kjua-0.1.1.min.js' %}"></script>
     {% endif %}
+    {% if reading_qr %} 
+    <script src="{% static 'app/scripts/html5-qrcode.min.js' %}"></script>
+    <script src="{% static 'app/scripts/jsqrcode-combined.min.js' %}"></script>
+    {% endif %}
 
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
 </head>
 
 <body>
-
+    
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -27,7 +31,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="/" class="navbar-brand">QRAccess</a>
+                <a href="/" class="navbar-brand"><strong>QRAccess</strong></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -43,12 +47,13 @@
                       </ul>
                     </li>
                     {% endif %}
+                    <li><a href="{% url 'scan' %}">Scan</a></li>
                 </ul>
                 {% include 'app/loginpartial.html' %}
             </div>
         </div>
     </div>
-
+    
     <div class="container body-content">
         <br />
         <br />

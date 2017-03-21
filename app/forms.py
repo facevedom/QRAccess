@@ -15,8 +15,14 @@ class User_self_registration(forms.Form):
     last_name = forms.CharField()
     email = forms.EmailField()
     user_id = forms.CharField()
-    event_id = forms.CharField()
+    event_id = forms.CharField(widget=forms.HiddenInput)
 
+class AttendeeRegistration(forms.Form):
+    name = forms.CharField()
+    last_name = forms.CharField()
+    email = forms.EmailField()
+    user_id = forms.CharField()
+    event_id = forms.CharField(widget=forms.HiddenInput)
 
 class EventCreation(forms.Form):
 

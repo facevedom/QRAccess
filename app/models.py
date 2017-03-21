@@ -29,7 +29,7 @@ class Room(models.Model):
 class Event(models.Model):
     # TODO perhaps add Sponsors for events?
     name = models.CharField(max_length=150)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=1000)
     company = models.ForeignKey(Company)
     start_date = models.DateField()
     end_date = models.DateField()

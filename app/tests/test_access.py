@@ -84,3 +84,11 @@ class AccessTest(TestCase):
     def test_no_GET_request(self):
         response = self.client.get('/check-access')
         self.assertEquals(response.content.decode(), 'False')
+
+    def test_permission_details(self):
+        response = self.client.get('/details/permission/%s' % self.permission.pk)
+        self.assertEqual(response.status_code, 200)
+
+    def test_invalid_permission_details(self):
+        response = self.client.get('/details/permission/1nv4l1d_id')
+        self.assertTemplateUsed(response, 'app/error.html')

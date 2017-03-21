@@ -6,8 +6,8 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from datetime import datetime
 from datetime import date
-from app.forms import User_self_registration
 from app.forms import EventCreation
+from app.forms import AttendeeRegistration
 from django.http import HttpResponse, HttpResponseRedirect
 from app.utils import generate_token
 from app.models import Permission
@@ -86,7 +86,7 @@ def success_happened(request, message):
 @require_POST
 def user_registration(request):
 
-    form = User_self_registration(request.POST)
+    form = AttendeeRegistration(request.POST)
 
     if form.is_valid():
         data = form.cleaned_data
@@ -109,9 +109,11 @@ def user_registration(request):
         else:
             user = EndUser.objects.get(id=user_id)
 
-        token_id = generate_token()
-
-        permission = Permission.objects.create(user_id=user, event=event, id=token_id)
+        if not Permission.objects.filter(user_id=user, event=event).exists():
+            token_id = generate_token()
+            permission = Permission.objects.create(user_id=user, event=event, id=token_id)
+        else:
+            return HttpResponse(False)
 
         # TODO send email with link
         return HttpResponse(token_id)
@@ -249,3 +251,122 @@ def delete_event(request, event_id):
     event.delete()
 
     return success_happened(request, 'Succesfully deleted the event %s' % event.name)
+
+
+def scan_qr(request):
+    return render(
+        request,
+        'end_user/scan.html',
+        {
+            'year': datetime.now().year,
+            'title': 'Scanning QR',
+            'message': 'Place your QR code in front of the webcam',
+            'reading_qr': True
+        }
+    )
+
+
+def permission_details(request, permission_id):
+
+    try:        
+        permission = Permission.objects.get(pk=permission_id)
+    except Permission.DoesNotExist:
+        return error_happened(request, 'Invalid code')
+
+    qr_user = permission.user_id
+    event = permission.event
+
+    return render(
+        request,
+        'end_user/details.html',
+        {
+           'year': datetime.now().year,
+           'title': 'Details',
+           'qr_user': qr_user,
+           'event': event    
+        }
+    )
+
+
+@login_required
+def event_details(request, event_id):
+
+    logged_user = request.user.username
+    company = Company.objects.get(name=logged_user)
+
+    try:        
+        event = Event.objects.get(pk=event_id, company=company)
+    except Event.DoesNotExist:
+        return error_happened(request, 'Invalid event')
+
+    permissions = Permission.objects.filter(event=event)
+
+    attendees = []
+    for permission in permissions:
+        attendee = permission.user_id
+        attendees.append(attendee)
+
+    return render(
+        request,
+        'event/details.html',
+        {
+           'year': datetime.now().year,
+           'title': 'Details',
+           'event': event,
+           'attendees': attendees
+        }
+    )
+
+
+@login_required
+def add_attendee(request, event_id):
+    if request.POST:
+        logged_user = request.user.username
+        form = AttendeeRegistration(request.POST)
+        if form.is_valid():
+
+            data = form.cleaned_data
+            user_id = data['user_id']
+            name = data['name']
+            last_name = data['last_name']
+            email = data['email']
+            event_id = data['event_id']
+
+            company = Company.objects.get(name=logged_user)
+            # TODO check if ID exists
+            event = Event.objects.get(event_id=event_id)
+            if event.company != company:
+                return error_happened(request, 'Invalid event')
+            if event.end_date < date.today():
+                return error_happened(request, 'Event has already finished')
+            
+            # TODO what if id is already registered but with a different email or name?
+
+            if not EndUser.objects.filter(id=user_id).exists():
+                user = EndUser.objects.create(id=user_id, name=name, last_name=last_name, email=email)
+                user.save()
+            else:
+                user = EndUser.objects.get(id=user_id)
+
+            if not Permission.objects.filter(user_id=user, event=event).exists():
+                token_id = generate_token()
+                permission = Permission.objects.create(user_id=user, event=event, id=token_id)
+            else:
+                return error_happened(request, '%s %s is already registered in event' % (name, last_name))
+
+            return success_happened(request, 'Succesfully added %s %s to %s' % (name, last_name, event.name))
+
+    else:
+        form = AttendeeRegistration(initial={'event_id': event_id})
+        event = Event.objects.get(event_id=event_id)
+
+    return render(
+        request,
+        'event/add_attendee.html',
+        {
+           'form': form,
+           'year': datetime.now().year,
+           'title': 'Adding Attendee to %s' % event.name
+        }
+    )
+
