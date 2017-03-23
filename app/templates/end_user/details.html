@@ -1,0 +1,72 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}</h2>
+<h3>{{ message }}</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">User</h3>
+            </div>
+            <div class="list-group panel-body">
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">Name</h4>
+                    <p class="list-group-item-text">{{ qr_user.name }} {{ qr_user.last_name }}</p>
+                </a>
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">ID</h4>
+                    <p class="list-group-item-text">{{ qr_user.id }}</p>
+                </a>
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">e-mail</h4>
+                    <p class="list-group-item-text">{{ qr_user.email }}</p>
+                </a>
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Accessible rooms</h3>
+            </div>
+            <div class="list-group panel-body">
+                <div class="list-group-item">
+                    {% for room in event.rooms.all %}
+                    <a href="#" class="list-group-item">
+                        <h4 class="list-group-item-heading">{{ room.name }}</h4>
+                        <p class="list-group-item-text">{{ room.description }}</p>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div> 
+        </div>       
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Event</h3>
+            </div>
+            <div class="list-group panel-body">
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">Name</h4>
+                    <p class="list-group-item-text">{{ event.name }}</p>
+                </a>
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">Company</h4>
+                    <p class="list-group-item-text">{{ event.company }}</p>
+                </a>
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">Dates</h4>
+                    <p class="list-group-item-text">From {{ event.start_date }} to {{ event.end_date }}</p>
+                </a>
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">Description</h4>
+                    <p class="list-group-item-text">{{ event.description }}</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}</h2>
+<h3>{{ message }}</h3>
+
+<hr>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div id="reader" style="width:500px;height:300px">
+            
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $('#reader').html5_qrcode(function (data) {
+        console.log(data);
+        window.location.href = "details/permission/" + data;
+        //window.location.replace("details/" + data);
+    },
+       function (error) {
+           //show read errors
+       }, function (videoError) {
+           //the video stream could be opened
+       }
+   );
+
+</script>
+{% endblock %}
