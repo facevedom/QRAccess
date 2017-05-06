@@ -198,3 +198,87 @@ class AccessTest(TestCase):
 
         response = self.client.get('/details/event/3v3nt')
         self.assertTemplateUsed(response, 'app/error.html')   
+
+    def test_succesfully_update_after_POST(self):
+        self.client.login(username='testcompany', password='12345')
+
+        Event.objects.create(
+            event_id='3v3nt',
+            name='Test Event',
+            description='Test Event desc',
+            company=self.company,
+            start_date=datetime(2017, 4, 12),
+            end_date=datetime(2017, 4, 15)
+        )
+
+        self.client.post(
+            '/edit/event/{event_id}'.format(event_id = '3v3nt'),
+            data={
+                'name': 'New Event',
+                'company': self.company,
+                'start_date': '04/19/2017',
+                'end_date': '04/22/2017',
+                'description': 'New Event desc',
+            }
+        )
+
+        event = Event.objects.get(pk='3v3nt')
+
+        self.assertEqual(event.name, 'New Event')
+        self.assertEqual(event.company, self.company)
+        self.assertEqual(event.start_date, date(2017, 4, 19))
+        self.assertEqual(event.end_date, date(2017, 4, 22))
+        self.assertEqual(event.description, 'New Event desc')
+
+    def test_render_success_page_after_POST(self):
+        self.client.login(username='testcompany', password='12345')
+
+        Event.objects.create(
+            event_id='3v3nt',
+            name='Test Event',
+            description='Test Event desc',
+            company=self.company,
+            start_date=datetime(2017, 4, 12),
+            end_date=datetime(2017, 4, 15)
+        )
+
+        response = self.client.post(
+            '/edit/event/{event_id}'.format(event_id = '3v3nt'),
+            data={
+                'name': 'New Event',
+                'company': self.company,
+                'start_date': '04/19/2017',
+                'end_date': '04/22/2017',
+                'description': 'New Event desc',
+            }
+        )
+
+        self.assertTemplateUsed(response, 'app/success.html')
+
+    def test_render_success_after_add_attendee(self):
+        self.client.login(username='testcompany', password='12345')
+        
+        Event.objects.create(
+            event_id='3v3nt',
+            name='Test Event',
+            description='Test Event desc',
+            company=self.company,
+            start_date=datetime.today(),
+            end_date=datetime.today() + timedelta(days=3)
+        )
+
+        response = self.client.post(
+            '/add-attendee/event/{event}'.format(event='3v3nt'),
+            data={
+                'user_id': 'u53r',
+                'name': 'Test Event',
+                'last_name': 'Test Event desc',
+                'email': 'event@mail.com',
+                'event_id': '3v3nt'
+            }
+        )
+
+        self.assertTemplateUsed(response, 'app/success.html')
+        
+
+

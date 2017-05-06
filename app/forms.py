@@ -6,6 +6,7 @@ from django import forms
 from django.forms import ModelForm
 from functools import partial
 from app.models import Company
+from app.models import Room
 
 DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 

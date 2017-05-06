@@ -1,4 +1,6 @@
 from django.test import TestCase
+from django.contrib.auth.models import User
+
 from app.forms import AttendeeRegistration
 from app.models import EndUser
 from app.models import Room
@@ -7,23 +9,27 @@ from app.models import Event
 from app.models import Permission
 
 from datetime import datetime
+from datetime import timedelta
 
 
 class UserRegistrationTest(TestCase):
 
     def setUp(self):
-        Company.objects.create(name='PSL', email='contact@psl.com.co', telephone='2761234')
-        self.company = Company.objects.first()
+        user = User.objects.create_user(username='testcompany', password='12345')
+        user.save()
+
+        self.company = Company.objects.create(name='PSL', email='contact@psl.com.co', telephone='2761234')
+        self.company = Company.objects.create(name='testcompany', email='contact@test.com.co', telephone='2761234')
 
         Room.objects.create(id='r00m1', company=self.company, security_level=1)
         Room.objects.create(id='r00m2', company=self.company, security_level=2)
         Room.objects.create(id='r00m3', company=self.company, security_level=3)
-
+        
         Event.objects.create(
             event_id='3v3nt',
             company=self.company,
-            start_date=datetime(2017, 4, 12),
-            end_date=datetime(2017, 4, 15)
+            start_date=datetime.today(),
+            end_date=datetime.today() + timedelta(days=3)
         )
 
         EndUser.objects.create(id='u53r')
@@ -95,3 +101,4 @@ class UserRegistrationTest(TestCase):
             }
         )
         self.assertEquals(response.content.decode(), 'False')
+        
