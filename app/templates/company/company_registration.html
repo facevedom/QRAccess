@@ -1,0 +1,14 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}</h2>
+
+<form class="form-horizontal well" method="POST">
+  {% csrf_token %}
+    <fieldset>
+        <legend>Please provide the following data</legend>
+    </fieldset>
+</form>
+
+{% endblock %}

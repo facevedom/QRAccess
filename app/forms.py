@@ -3,7 +3,6 @@ Definition of forms.
 """
 
 from django import forms
-from django.forms import ModelForm
 from functools import partial
 from app.models import Company
 from app.models import Room
@@ -44,7 +43,9 @@ class EventCreation(forms.Form):
             msg = u"End date should be after start date."
             self._errors["start_date"] = self.error_class([msg])
 
-class CompanyForm(ModelForm):
+class CompanyForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+
     class Meta:
         model = Company
-        fields = ['name', 'email', 'telephone']
+        fields = ['name', 'email', 'telephone', 'address']

@@ -14,3 +14,5 @@ from app.views.event_views import delete_event
 from app.views.event_views import event_details
 from app.views.event_views import add_attendee
 from app.views.event_views import edit_event
+
+from app.views.company_views import company_registration

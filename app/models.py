@@ -8,6 +8,7 @@ from datetime import date
 
 class Company(models.Model):
     name = models.CharField(max_length=150)
+    address = models.CharField(max_length=150)
     email = models.EmailField(max_length=100)
     telephone = models.IntegerField()
 
