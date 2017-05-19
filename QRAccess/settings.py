@@ -138,3 +138,13 @@ STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
 
 # Default redirection after login
 LOGIN_REDIRECT_URL = '/'
+
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_SSL = True
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = 'noreply.qraccess@gmail.com'
+EMAIL_HOST_PASSWORD = 'qraccess2017'
+
