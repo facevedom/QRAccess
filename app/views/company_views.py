@@ -29,6 +29,7 @@ def company_registration(request):
             )
             User.objects.create_user(username=data['name'], password= data['password'])        
             send_validation_email(data['email'])
+            return success_happened(request, 'Company {company} successfuly created'.format(company=data['name']))
         return render(request, 'company/company_registration.html', {'title': 'Company registration', 'form': form})
 
     return Http404()

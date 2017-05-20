@@ -6,6 +6,20 @@
 
 <h2>{{ title }}</h2>
 
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+              {% if field != '__all__' %}
+                <strong>{{ field.label }}:</strong>
+              {% endif %}
+              {{ error }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
 <form class="form-horizontal well" method="POST">
   {% csrf_token %}
     <fieldset>

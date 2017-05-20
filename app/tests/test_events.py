@@ -185,7 +185,7 @@ class AccessTest(TestCase):
         # tests failure when loading details if requested event doesn't belong to logged company
         self.client.login(username='testcompany', password='12345')
 
-        company = Company.objects.create(name='cmpny2', email='contact@test.com.co', telephone='2761234')
+        company = Company.objects.create(name='cmpny2', email='contact2@test.com.co', telephone='2761234')
 
         Event.objects.create(
             event_id='3v3nt',

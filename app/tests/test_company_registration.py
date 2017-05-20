@@ -4,11 +4,9 @@ from django.core import mail
 
 from app.models import Company
 from app.forms import CompanyForm
+from app.forms import RecoverCompanyPasswordForm
 
 class CompanyFormTest(TestCase):
-
-    def setUp(self):
-        pass
 
     def test_company_registration_render_correct_html(self):
         response = self.client.get('/company/registration/')
