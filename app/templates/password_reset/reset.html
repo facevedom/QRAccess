@@ -1,0 +1,64 @@
+{% extends "app/layout_empty_center.html" %}
+
+{% block content %}
+
+{% load customfilters %}
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+
+        {% if form.errors %}
+          {% for field in form %}
+              {% for error in field.errors %}
+                  <div class="alert alert-dismissible alert-danger">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {% if field != '__all__' %}
+                      <strong>{{ field.label }}:</strong>
+                    {% endif %}
+                    {{ error }}
+                  </div>
+              {% endfor %}
+          {% endfor %}
+      {% endif %}
+      
+        <div class="well bs-component">
+            {% if invalid %}
+              <legend class="text-center">Reset your password <strong><a href="{% url 'home' %}">QRAccess</a></strong></legend>
+              <p>                
+                The password reset link was invalid
+              </p>
+            {% else %}
+              <form class="form-horizontal" method="post">
+                {% csrf_token %}
+
+                <fieldset>
+                  <legend class="text-center">Reset your password <strong><a href="{% url 'home' %}">QRAccess</a></strong></legend>
+                  <br />
+
+                  <div class="form-group">
+                    <label for="{{ form.password1.id_for_label }}" class="col-sm-2 col-sm-offset-1 control-label">{{ form.password1.label }}</label>
+                    <div class="col-sm-8">
+                        {{ form.password1|addclass:'form-control' }}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ form.password2.id_for_label }}" class="col-sm-2 col-sm-offset-1 control-label">{{ form.password2.label }}</label>
+                    <div class="col-sm-8">
+                        {{ form.password2|addclass:'form-control' }}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-10 col-sm-offset-1">
+                      <button type="submit" class="btn btn-primary btn-block">Reset password</button>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            {% endif %}
+            <hr />
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

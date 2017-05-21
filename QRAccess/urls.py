@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^details/event/(?P<event_id>[A-Za-z0-9-_]+)$', app.views.event_details, name='event_details'),
     url(r'^add-attendee/event/(?P<event_id>[A-Za-z0-9-_]+)$', app.views.add_attendee, name='add_attendee'),
     url(r'^company/registration/$', app.views.company_registration, name='company_registration'),
+    url(r'^company/password/', include('password_reset.urls'),),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 ]

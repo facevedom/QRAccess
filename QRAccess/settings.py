@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['testserver', '127.0.0.1', 'localhost']
 INSTALLED_APPS = [
     'app',
     # Add your apps here to enable them
+    'password_reset',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
