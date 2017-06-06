@@ -43,14 +43,14 @@ def company_registration(request):
 def send_validation_email(email):
     subject = 'QRAccess - Please confirm your email address'
     message = '''Thanks for signing up for QRAccess! Please click the link below 
-    to confirm your mail address.
-    \nhttp://127.0.0.1/account_verification/ 
-    \n
-    \nTeam QRAccess'''
+              to confirm your mail address.
+              \nhttp://127.0.0.1/account_verification/ 
+              \n
+              \nTeam QRAccess'''
     html_message = '''Thanks for signing up for QRAccess! Please click this 
-    <a http://127.0.0.1/account_verification/>link</a> to confirm your mail address.
-    \n
-    \nTeam QRAccess'''
+                   <a http://127.0.0.1/account_verification/>link</a> to confirm your mail address.
+                   \n
+                   \nTeam QRAccess'''
     _from = 'noreply.qraccess@gmail.com'
     to = [email]
 

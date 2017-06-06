@@ -10,6 +10,8 @@ from app.forms import AttendeeRegistration
 from app.models import Event
 from app.models import EndUser
 from app.models import Permission
+from app.models import Room
+from app.models import AccessLog
 from app.utils import generate_token
 from app.views.main_views import error_happened
 from app.views.main_views import success_happened
@@ -105,6 +107,7 @@ def check_room_access(request):
             return HttpResponse(False)
 
         if permission.event.rooms.all().filter(id=room_id).exists():
+            access_log = AccessLog.objects.create(room=Room.objects.get(pk=room_id), permission=permission)
             return HttpResponse(True)
 
         return HttpResponse(False)

@@ -4,6 +4,7 @@ Definition of models.
 
 from django.db import models
 from datetime import date
+from datetime import datetime
 
 
 class Company(models.Model):
@@ -70,3 +71,11 @@ class Permission(models.Model):
 
     def __str__(self):
         return '%s @ %s' % (self.user_id, self.event)
+
+class AccessLog(models.Model):
+    room = models.ForeignKey(Room)
+    permission = models.ForeignKey(Permission)
+    date = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def __str__(self):
+        return '{room} @ {permission} - {date}'.format(room = self.room, permission = self.permission, date=self.date)
