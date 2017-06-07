@@ -3,7 +3,7 @@
 A physical access manager through QR codes
 
 ## Status
- ![Build Status](https://codeship.com/projects/a2b04f00-ebec-0134-8140-1aeee08fcace/status?branch=master)
+[ ![Codeship Status for facevedom/QRAccess](https://app.codeship.com/projects/ed1f5d60-f190-0134-3b07-0a10f412d679/status?branch=master)](https://app.codeship.com/projects/209430)
 
 ## Implements
 * Python
