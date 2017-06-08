@@ -15,3 +15,16 @@
 {
     vertical-align: middle;
 }
+
+.bottom-aligned {
+	min-height: 50px;
+}
+
+.footer {
+	bottom:0;
+	left:0;
+	right:0;
+	position:absolute;
+	background-color: #efefef;
+	min-height: 50px;
+}

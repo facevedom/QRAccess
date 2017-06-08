@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import Http404
@@ -7,6 +10,8 @@ from django.contrib.auth.models import User
 from app.models import Company
 
 from app.forms import CompanyForm
+
+from app.views.main_views import success_happened
 
 
 def company_registration(request):
@@ -44,13 +49,13 @@ def send_validation_email(email):
     subject = 'QRAccess - Please confirm your email address'
     message = '''Thanks for signing up for QRAccess! Please click the link below 
               to confirm your mail address.
-              \nhttp://127.0.0.1/account_verification/ 
+              \n{}/account_verification/ 
               \n
-              \nTeam QRAccess'''
+              \nTeam QRAccess'''.format(request.get_host())
     html_message = '''Thanks for signing up for QRAccess! Please click this 
-                   <a http://127.0.0.1/account_verification/>link</a> to confirm your mail address.
+                   <a href={}/account_verification/>link</a> to confirm your mail address.
                    \n
-                   \nTeam QRAccess'''
+                   \nTeam QRAccess'''.format(request.get_host())
     _from = 'noreply.qraccess@gmail.com'
     to = [email]
 

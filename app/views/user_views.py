@@ -1,7 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from django.views.decorators.csrf import csrf_exempt  # for testing only
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.core.mail import send_mail
 
 from datetime import datetime
 from datetime import date
@@ -49,10 +53,31 @@ def user_registration(request):
         else:
             return HttpResponse(False)
 
-        # TODO send email with link
-        return HttpResponse(token_id)
+        send_qr_email(email, event, token_id, request)
+        return success_happened(request, 'Please check %s to get your QR code!' % email)
+
     else:
         return HttpResponse(False)
+
+
+def send_qr_email(email, event, token_id, request):
+
+    generate_url = '{}/generate/{}'.format(request.get_host(), token_id)
+
+    subject = 'Welcome to {}!'.format(event.name)
+    message = '''Thanks for signing up. Please click the link below 
+              to download your QR code.
+              \n{}
+              \n
+              \nTeam QRAccess & {}'''.format(generate_url, event.company)
+    html_message = '''Thanks for signing up. Please click the link below <br>
+                   <a href={}>{}</a> 
+                   <br>to download your QR code.
+                   <br>Team QRAccess & {}'''.format(generate_url, generate_url, event.company)
+    _from = 'noreply.qraccess@gmail.com'
+    to = [email]
+
+    send_mail(subject, message, _from, to, fail_silently=False, html_message=html_message)
 
 
 def generate_qr(request, id):

@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
@@ -6,6 +9,7 @@ from datetime import date
 
 from app.views.main_views import error_happened
 from app.views.main_views import success_happened
+from app.views.user_views import send_qr_email
 from app.forms import EventCreation
 from app.forms import AttendeeRegistration
 from app.models import Event
@@ -151,6 +155,7 @@ def add_attendee(request, event_id):
             else:
                 return error_happened(request, '%s %s is already registered in event' % (name, last_name))
 
+            send_qr_email(email, event, token_id, request)
             return success_happened(request, 'Succesfully added %s %s to %s' % (name, last_name, event.name))
 
     else:
