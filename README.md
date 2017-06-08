@@ -11,7 +11,6 @@ A physical access manager through QR codes
 * Bootstrap
 
 ## Contributors
-
 **Felipe** and **Sebastian**
 
 ---
