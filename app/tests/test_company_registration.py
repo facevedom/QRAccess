@@ -4,7 +4,6 @@ from django.core import mail
 
 from app.models import Company
 from app.forms import CompanyForm
-from app.forms import RecoverCompanyPasswordForm
 
 class CompanyFormTest(TestCase):
 

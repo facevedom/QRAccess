@@ -37,7 +37,7 @@ def company_registration(request):
                 password= data['password'], 
                 email=data['email']
             )
-            send_validation_email(data['email'])
+            send_validation_email(data['email'], request)
             return success_happened(request, 'Company {company} successfuly created'.format(company=data['name']))
         return render(request, 'company/company_registration.html', {'title': 'Company registration', 'form': form})
 
@@ -45,7 +45,7 @@ def company_registration(request):
 
 
 
-def send_validation_email(email):
+def send_validation_email(email, request):
     subject = 'QRAccess - Please confirm your email address'
     message = '''Thanks for signing up for QRAccess! Please click the link below 
               to confirm your mail address.

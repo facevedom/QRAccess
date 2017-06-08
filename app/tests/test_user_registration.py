@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from django.test import TestCase
 from django.contrib.auth.models import User
 
@@ -87,7 +90,8 @@ class UserRegistrationTest(TestCase):
             }
         )
         new_permission = Permission.objects.first()
-        self.assertEquals(response.content.decode(), new_permission.pk)
+        self.assertTemplateUsed(response, 'app/success.html')
+        #self.assertEquals(response.content.decode(), new_permission.pk)
 
     def test_user_registration_invalid(self):
         response = self.client.post(
