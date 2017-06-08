@@ -1,5 +1,4 @@
 # QRAccess
-
 A physical access manager through QR codes
 
 ## Status
